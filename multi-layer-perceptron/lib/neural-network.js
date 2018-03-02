@@ -12,6 +12,10 @@ class WeightedLayer extends Layer {
         super(nodeCount);
         this.weights = new Matrix(nodeCount, previousLayerNodeCount).randomize();
     }
+
+    feedForward(inputs) {
+        // TODO
+    }
 }
 
 module.exports = class NeuralNetwork {
@@ -24,11 +28,9 @@ module.exports = class NeuralNetwork {
 
     feedForward(inputsArray) {
         const inputs = Matrix.fromArray(inputsArray);
+        let previousOutput = inputs;
 
-        this.layers.forEach((layer, layerIndex) => {
-            if (layerIndex === 0) return;
-            // TODO
-        });
+        this.layers.forEach((layer, layerIndex) => layer.feedForward(previousOutput));
     }
 
     train() {

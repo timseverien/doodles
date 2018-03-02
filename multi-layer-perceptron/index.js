@@ -15,6 +15,6 @@ const trainingData = [{
 }];
 
 const network = new NeuralNetwork(3, 2, 1);
-const output = network.feedForward(trainingData[0]);
+const output = network.feedForward(trainingData[0].in);
 
 console.log(output);

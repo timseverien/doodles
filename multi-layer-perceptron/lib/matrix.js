@@ -70,6 +70,6 @@ module.exports = class Matrix {
     }
 
     static fromArray(array) {
-        return new Matrix(array.length, 1).fill((n, row, column, index) => array[index]);
+        return new Matrix(array.length, 1).map((n, row, column, index) => array[index]);
     }
 };
