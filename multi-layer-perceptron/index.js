@@ -1,20 +1,30 @@
 const NeuralNetwork = require('./lib/neural-network');
 
+const test = (network, input, target) => {
+    const output = network.feedForward(input);
+    
+    console.log(`The inputs: ${input} should output: ${target}.`);
+    console.log('Output:', output);
+};
+
 const trainingData = [{
     in: [0, 0],
-    out: [0],
+    target: [0],
 }, {
     in: [1, 0],
-    out: [1],
+    target: [1],
 }, {
     in: [0, 1],
-    out: [1],
+    target: [1],
 }, {
     in: [1, 1],
-    out: [0],
+    target: [0],
 }];
 
-const network = new NeuralNetwork(3, 2, 1);
-const output = network.feedForward(trainingData[0].in);
+const network = new NeuralNetwork(2, 2, 1);
 
-console.log(output);
+test(network, trainingData[1].in, trainingData[1].target);
+
+trainingData.forEach(entry => network.train(entry.in, entry.target));
+
+test(network, trainingData[1].in, trainingData[1].target);
