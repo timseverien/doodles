@@ -65,6 +65,15 @@ test('Matrix.map', (t) => {
 	t.true(spy.calledWithExactly(0, 0, 0, 0));
 });
 
+test('Matrix.multiply', (t) => {
+	const matrix = new Matrix(3, 4).map((n, r, c, i) => i);
+	matrix.multiply(new Matrix(3, 4).map((n, r, c, i) => i));
+
+	t.is(matrix.data[4], 16);
+	t.throws(() => matrix.multiply(NaN));
+	t.throws(() => matrix.multiply(new Matrix(4, 4)));
+});
+
 test('Matrix.multiplyScalar', (t) => {
 	const matrix = new Matrix(3, 4).map((n, r, c, i) => i);
 	matrix.multiplyScalar(2);
@@ -162,6 +171,7 @@ test('Matrix.multiply', (t) => {
 test('Matrix.product', (t) => {
 	t.throws(() => Matrix.product(new Matrix(1, 1), 1));
 	t.throws(() => Matrix.product(1, new Matrix(1, 1)));
+	t.throws(() => Matrix.product(new Matrix(1, 3), new Matrix(2, 2)));
 
 	const a = new Matrix(3, 4).map(n => 2);
 	const b = new Matrix(4, 3).map(n => 3);
@@ -169,7 +179,7 @@ test('Matrix.product', (t) => {
 
 	t.is(result.rowCount, 3);
 	t.is(result.columnCount, 3);
-	t.is(result.get(0, 0), 18);
+	t.is(result.get(0, 0), 24);
 });
 
 test('Matrix.transpose', (t) => {

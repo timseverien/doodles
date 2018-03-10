@@ -7,8 +7,8 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Program",
-            "program": "${workspaceFolder}/index.js"
+            "name": "Launch XOR Example",
+            "program": "${workspaceFolder}/examples/xor.js"
         }
     ]
 }

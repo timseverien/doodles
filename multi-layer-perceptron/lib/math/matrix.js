@@ -66,6 +66,15 @@ module.exports = class Matrix {
 		return this;
 	}
 
+	multiply(matrix) {
+		if (!Matrix.isSimilar(this, matrix)) {
+			throw new Error(`${this} and ${matrix} should have equal row and column count`);
+		}
+
+		this.data = this.data.map((n, index) => n * matrix.data[index]);
+		return this;
+	}
+
 	multiplyScalar(s) {
 		if (typeof s !== 'number' || Number.isNaN(s)) throw new Error(`${s} must be a number`);
 
@@ -149,12 +158,16 @@ module.exports = class Matrix {
 			throw new Error(`${a} and ${b} must be of Matrix type`);
 		}
 
+		if (b.rowCount !== a.columnCount) {
+			throw new Error(`The amount of columns of ${a} should equal the amount of rows of ${b}`);
+		}
+
 		const product = new Matrix(a.rowCount, b.columnCount);
 
 		product.map((n, row, column) => {
 			let sum = 0;
 
-			for (let i = 0; i < b.columnCount; i++) {
+			for (let i = 0; i < b.rowCount; i++) {
 				sum += a.get(row, i) * b.get(i, column);
 			}
 
