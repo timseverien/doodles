@@ -9,6 +9,12 @@
       "request": "launch",
       "name": "Launch XOR Example",
       "program": "${workspaceFolder}/examples/xor.js"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch colour contrast Example",
+      "program": "${workspaceFolder}/examples/color-contrast.js"
     }
   ]
 }
