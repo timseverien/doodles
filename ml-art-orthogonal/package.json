@@ -1,0 +1,9 @@
+{
+  "private": true,
+  "scripts": {
+    "start": "browser-sync start -s -w"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.24.4"
+  }
+}

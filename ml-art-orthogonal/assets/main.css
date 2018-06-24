@@ -1,0 +1,100 @@
+*,
+*::after,
+*::before {
+	box-sizing: border-box;
+}
+
+/********************************
+ * Elements
+ ********************************/
+
+ body {
+	background-color: #fafafa;
+	color: #333;
+	font-family: sans-serif;
+	line-height: 1.6;
+}
+
+canvas {
+	display: block;
+	height: auto;
+	width: 100%;
+	image-rendering: pixelated;
+}
+
+fieldset {
+	border: 0;
+	padding: 0;
+	margin: 0;
+}
+
+legend {
+	padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	line-height: 1;
+}
+
+/********************************
+ * Objects
+ ********************************/
+
+.container {
+	padding: 1rem;
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 36rem;
+}
+
+/********************************
+ * Components
+ ********************************/
+
+.card {
+	padding: 1rem;
+	border: 1px solid #e0e0e0;
+	border-radius: 0.25rem;
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+	background-color: #f4f4f4;
+	box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
+}
+
+.figure {
+	padding: 0;
+	margin: 0;
+	background-color: #333;
+	box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
+}
+
+.figure__meta {
+	display: flex;
+	padding: 0.5rem 1rem;
+	flex-direction: row;
+	gap: 1rem;
+	background-color: #333;
+}
+.figure__meta-item {
+	color: #fff;
+	font-size: smaller;
+	margin-right: 1rem;
+}
+.figure__meta-item:last-child {
+	margin-right: 0;
+}
+
+/********************************
+ * Trumps
+ ********************************/
+
+.visually-hidden {
+	height: 1px;
+	width: 1px;
+	padding: 0;
+	border: 0;
+	overflow: hidden;
+	position: absolute;
+	clip: rect(1px 1px 1px 1px);
+	clip: rect(1px, 1px, 1px, 1px);
+}
