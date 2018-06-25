@@ -46,4 +46,4 @@ document.getElementById('button-apply').addEventListener('click', () => {
 	});
 });
 
-window.addEventListener('beforeunload', () => renderer.dispose());
+window.addEventListener('beforeunload', () => renderer.stop());

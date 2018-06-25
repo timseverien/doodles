@@ -41,6 +41,7 @@ export default class Renderer extends EventEmitter {
 	start(seed, variance) {
 		if (this.model) {
 			tf.dispose(this.model);
+			this.model = null;
 		}
 
 		this.imageData = this.context.createImageData(this.width, this.height);
