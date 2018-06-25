@@ -17,6 +17,22 @@ body {
 	line-height: 1.6;
 }
 
+button {
+	padding: 1rem;
+	border: 0;
+	background-color: #ff3562;
+	box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
+	color: #fff;
+	font-weight: 700;
+	text-transform: uppercase;
+}
+button:hover {
+	background-color: #f5315c;
+}
+button:focus {
+	outline: 0.125rem solid #f4f4f4;
+}
+
 canvas {
 	display: block;
 	height: auto;
@@ -58,27 +74,30 @@ h1 {
 
 	grid-template-areas: 'figure'
 		'settings-input'
-		'settings-image';
+		'settings-image'
+		'settings-actions';
 	grid-template-columns: 1fr;
 	gap: 1rem;
 }
-@media only screen and (min-width: 36rem) {
-	.app {
-		grid-template-areas: 'figure figure'
-			'settings-input settings-image';
-		grid-template-columns: 1fr 1fr;
-	}
-}
-
-
 .app__figure {
 	grid-area: figure;
+}
+.app__settings-actions {
+	grid-area: settings-actions;
 }
 .app__settings-image {
 	grid-area: settings-image;
 }
 .app__settings-input {
 	grid-area: settings-input;
+}
+@media only screen and (min-width: 36rem) {
+	.app {
+		grid-template-areas: 'figure figure'
+			'settings-input settings-image'
+			'settings-actions .';
+		grid-template-columns: 1fr 1fr;
+	}
 }
 
 .container {

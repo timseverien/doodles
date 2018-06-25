@@ -1,5 +1,3 @@
-import animate from './utils/animate.js';
-import MathUtils from './utils/math.js';
 import Renderer from './renderer.js';
 
 const inputHeight = document.getElementById('input-height');
@@ -13,29 +11,39 @@ const outputCanvas = document.getElementById('output-canvas');
 const outputProgress = document.getElementById('output-progress');
 const outputTimeRemaining = document.getElementById('output-time-remaining');
 
-const renderer = new Renderer(outputCanvas, inputWidth.value, inputHeight.value);
+const renderer = new Renderer(outputCanvas);
+renderer.setSize(inputWidth.value, inputHeight.value);
 renderer.start(inputSeed.value, inputVariance.value);
 
-const duration = renderer.pixelCount / 60 / 8;
+let outputTimeRemainingLastUpdate = -Infinity;
 
-animate((_, frame, isLast, stop) => {
-	const x = frame % renderer.width;
-	const y = Math.floor(frame / renderer.width) % renderer.height;
-	const progress = Math.min(1, frame / renderer.pixelCount);
+renderer.on('render', () => {
+	const now = performance.now();
+
+	const progress = renderer.progress;
 	const progressPercent = `${(progress * 100).toFixed(2)}%`;
+	const pixelsRemaining = renderer.pixelCount - Math.floor(progress * renderer.pixelCount);
+	const timeRemaining = renderer.animationLoop.frameRate > 0
+		? Math.max(0, pixelsRemaining / renderer.animationLoop.frameRate / Renderer.UPDATES_PER_FRAME)
+		: 0;
 
 	outputProgress.innerText = progressPercent;
-	outputTimeRemaining.innerText = `~${MathUtils.lerp(0, duration, 1 - progress).toFixed(0)}s remaining`;
 
-	renderer.update(x, y);
-
-	if (isLast) {
-		renderer.render();
+	if (now > outputTimeRemainingLastUpdate + 1000) {
+		outputTimeRemaining.innerText = `~${timeRemaining.toFixed(0)}s remaining`;
+		outputTimeRemainingLastUpdate = now;
 	}
+});
 
-	if (frame === renderer.pixelCount) {
-		stop();
-	}
-}, 8);
+document.getElementById('button-apply').addEventListener('click', () => {
+	renderer.stop(() => {
+		if (
+			renderer.height !== inputHeight.value ||
+			renderer.width !== inputWidth.value
+		) renderer.setSize(inputWidth.value, inputHeight.value);
+
+		renderer.start(inputSeed.value, inputVariance.value);
+	});
+});
 
 window.addEventListener('beforeunload', () => renderer.dispose());

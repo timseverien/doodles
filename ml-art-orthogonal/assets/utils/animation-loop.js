@@ -1,0 +1,45 @@
+export default class AnimationLoop {
+	constructor(callback) {
+		if (typeof callback !== 'function') {
+			throw new Error(`Callback ${callback} should be a function`);
+		}
+
+		this._callback = callback;
+		this._frame = 0;
+		this._isStopped = false;
+		this._onStopCallback = null;
+		this._rId = null;
+		this._timePrevious = 0;
+		this.frameRate = 1;
+	}
+
+	start() {
+		const now = performance.now();
+
+		this._frame = 0;
+		this._isStopped = false;
+		this._timePrevious = now;
+
+		this._next(now);
+	}
+
+	stop(callback) {
+		if (this._isStopped) return;
+
+		this._isStopped = true;
+		cancelAnimationFrame(this._rid);
+		requestAnimationFrame(callback);
+	}
+
+	_next(time) {
+		if (this._isStopped) return;
+
+		const delta = (time - this._timePrevious) / 1000;
+
+		this._timePrevious = time;
+		this.frameRate = 1 / delta;
+
+		requestAnimationFrame(this._next.bind(this));
+		this._callback(time, this._frame++);
+	}
+}
