@@ -1,5 +1,6 @@
 import EventEmitter from './utils/event-emitter.js';
 import AnimationLoop from './utils/animation-loop.js';
+import noop from './utils/noop.js';
 
 export default class Renderer extends EventEmitter {
 	constructor(canvas) {
@@ -51,7 +52,7 @@ export default class Renderer extends EventEmitter {
 		this.animationLoop.start();
 	}
 
-	stop(callback) {
+	stop(callback = noop) {
 		if (this.model) {
 			tf.dispose(this.model);
 			this.model = null;

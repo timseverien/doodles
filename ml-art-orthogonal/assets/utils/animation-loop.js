@@ -1,4 +1,4 @@
-const noop = () => {};
+import noop from './noop.js';
 
 export default class AnimationLoop {
 	constructor(callback) {
