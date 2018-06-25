@@ -11,12 +11,13 @@ export default class Renderer extends EventEmitter {
 		this.imageData = null;
 		this.model = null;
 		this.progress = 0;
+		this.updatesPerFrame = 1;
 
 		this.aspect = this.width / this.height;
 
 		this.animationLoop = new AnimationLoop((_, frame) => {
-			for (let i = 0; i < Renderer.UPDATES_PER_FRAME; i++) {
-				this.update(Renderer.UPDATES_PER_FRAME * frame + i);
+			for (let i = 0; i < this.updatesPerFrame; i++) {
+				this.update(this.updatesPerFrame * frame + i);
 			}
 
 			this.render();
@@ -142,9 +143,5 @@ export default class Renderer extends EventEmitter {
 			inputs,
 			outputs,
 		});
-	}
-
-	static get UPDATES_PER_FRAME() {
-		return 4;
 	}
 }

@@ -2,6 +2,7 @@ import Renderer from './renderer.js';
 
 const inputHeight = document.getElementById('input-height');
 const inputWidth = document.getElementById('input-width');
+const inputUpdatesPerFrame = document.getElementById('input-updates-per-frame');
 const inputSeed = document.getElementById('input-seed');
 const inputVariance = document.getElementById('input-variance');
 
@@ -12,6 +13,7 @@ const outputProgress = document.getElementById('output-progress');
 const outputTimeRemaining = document.getElementById('output-time-remaining');
 
 const renderer = new Renderer(outputCanvas);
+renderer.updatesPerFrame = inputUpdatesPerFrame.value;
 renderer.setSize(inputWidth.value, inputHeight.value);
 renderer.start(inputSeed.value, inputVariance.value);
 
@@ -24,7 +26,7 @@ renderer.on('render', () => {
 	const progressPercent = `${(progress * 100).toFixed(2)}%`;
 	const pixelsRemaining = renderer.pixelCount - Math.floor(progress * renderer.pixelCount);
 	const timeRemaining = renderer.animationLoop.frameRate > 0
-		? Math.max(0, pixelsRemaining / renderer.animationLoop.frameRate / Renderer.UPDATES_PER_FRAME)
+		? Math.max(0, pixelsRemaining / renderer.animationLoop.frameRate / renderer.updatesPerFrame)
 		: 0;
 
 	outputProgress.innerText = progressPercent;
@@ -42,6 +44,7 @@ document.getElementById('button-apply').addEventListener('click', () => {
 			renderer.width !== inputWidth.value
 		) renderer.setSize(inputWidth.value, inputHeight.value);
 
+		renderer.updatesPerFrame = inputUpdatesPerFrame.value;
 		renderer.start(inputSeed.value, inputVariance.value);
 	});
 });
