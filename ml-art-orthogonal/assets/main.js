@@ -4,12 +4,10 @@ import Renderer from './renderer.js';
 
 const inputHeight = document.getElementById('input-height');
 const inputWidth = document.getElementById('input-width');
-
 const inputSeed = document.getElementById('input-seed');
-inputSeed.value = Math.round(inputSeed.max * Math.random());
-inputSeed.value = 1181550508;
-
 const inputVariance = document.getElementById('input-variance');
+
+inputSeed.value = Math.round(inputSeed.max * Math.random());
 
 const outputCanvas = document.getElementById('output-canvas');
 const outputProgress = document.getElementById('output-progress');
