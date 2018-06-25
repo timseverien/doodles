@@ -7,42 +7,52 @@
 	<title>Document</title>
 
 	<link rel="stylesheet" href="assets/main.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700,900">
 </head>
 <body>
 
-	<main class="container">
-		<h1>Abstract Art by a Neural Network</h1>
+	<h1 class="visually-hidden">Abstract Art by a Neural Network</h1>
 
-		<figure class="figure">
+	<main class="container app">
+		<div class="app__figure">
+			<figure class="card figure">
 				<canvas id="output-canvas"></canvas>
 				<figcaption class="figure__meta">
 					<span class="figure__meta-item" id="output-progress"></span>
 					<span class="figure__meta-item" id="output-time-remaining"></span>
 				</figcaption>
-		</figure>
+			</figure>
+		</div>
 
-		<section class="card">
-			<h2 class="visually-hidden">Settings</h2>
-			<div>
-				<label for="input-variance">Variance</label>
-				<input type="number" min="0" max="8" step="1" value="8" id="input-variance">
+		<div class="app__settings-input card">
+			<div class="form-control">
+				<label for="input-variance" class="form-control__label">Variance</label>
+				<input type="number" min="0" max="8" step="1" value="8" id="input-variance" class="form-control__field">
 			</div>
 
-			<div>
-				<label for="input-seed">Seed</label>
-				<input type="number" min="0" max="10000000000" step="1" id="input-seed">
+			<div class="form-control">
+				<label for="input-seed" class="form-control__label">Seed</label>
+				<input type="number" min="0" max="10000000000" step="1" id="input-seed" class="form-control__field">
 			</div>
+		</div>
 
-			<fieldset>
-				<legend>Resolution</legend>
+		<div class="app__settings-image card">
+			<fieldset class="form-control">
+				<legend class="form-control__label">Resolution</legend>
 
-				<label for="input-width" class="visually-hidden">Width</label>
-				<input type="number" min="1" value="256" step="1" id="input-width">
-				&times;
-				<label for="input-width" class="visually-hidden">Height</label>
-				<input type="number" min="1" value="128" step="1" id="input-height">
+				<div class="field-group">
+					<div class="field-group__field">
+						<label for="input-width" class="visually-hidden">Width</label>
+						<input type="number" min="1" value="256" step="1" id="input-width" class="form-control__field">
+					</div>
+					<div class="field-group__separator">&times;</div>
+					<div class="field-group__field">
+						<label for="input-width" class="visually-hidden">Height</label>
+						<input type="number" min="1" value="128" step="1" id="input-height" class="form-control__field">
+					</div>
+				</div>
 			</fieldset>
-		</section>
+		</div>
 	</main>
 
 	<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.11.7"></script>
