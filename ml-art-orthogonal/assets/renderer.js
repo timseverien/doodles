@@ -114,7 +114,16 @@ export default class Renderer extends EventEmitter {
 		return this.context.canvas.width;
 	}
 
-	static createModel(seed, variance, depth = 8, width = 32) {
+	static createModel(seed, variance, depth = 8, width = 8) {
+		// const depth = 8
+    // const width = 8
+    // for (var i = 0; i < depth; ++i) {
+    //     let y = tf.layers.dense({ units: width, kernelInitializer: init, activation: 'sigmoid' }).apply(x) as tf.SymbolicTensor
+    //     x = tf.layers.concatenate({}).apply([x, y]) as tf.SymbolicTensor
+    // }
+
+    // return x
+
 		const kernelInitializer = tf.initializers.varianceScaling({
 			distribution: 'normal',
 			mode: 'fanIn',
@@ -126,11 +135,13 @@ export default class Renderer extends EventEmitter {
 		let outputs = inputs;
 
 		for (let i = 0; i < depth; i++) {
-			outputs = tf.layers.dense({
-				activation: 'tanh',
+			let layer = tf.layers.dense({
+				activation: 'sigmoid',
 				kernelInitializer: kernelInitializer,
 				units: width,
 			}).apply(outputs);
+
+			outputs = tf.layers.concatenate({}).apply([outputs, layer]);
 		}
 
 		outputs = tf.layers.dense({

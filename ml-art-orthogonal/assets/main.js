@@ -1,4 +1,5 @@
 import Renderer from './renderer.js';
+import MathUtils from './utils/math.js';
 
 const inputHeight = document.getElementById('input-height');
 const inputWidth = document.getElementById('input-width');
@@ -6,11 +7,25 @@ const inputUpdatesPerFrame = document.getElementById('input-updates-per-frame');
 const inputSeed = document.getElementById('input-seed');
 const inputVariance = document.getElementById('input-variance');
 
-inputSeed.value = Math.round(inputSeed.max * Math.random());
+inputSeed.max = Number.MAX_SAFE_INTEGER;
+
+const randomizeParameters = () => {
+	inputSeed.value = Math.floor(MathUtils.lerp(
+		Number.parseInt(inputSeed.min),
+		Number.parseInt(inputSeed.max),
+		Math.random()));
+
+	inputVariance.value = Math.floor(MathUtils.lerp(
+		Number.parseInt(inputVariance.min),
+		Number.parseInt(inputVariance.max),
+		Math.random()));
+};
 
 const outputCanvas = document.getElementById('output-canvas');
 const outputProgress = document.getElementById('output-progress');
 const outputTimeRemaining = document.getElementById('output-time-remaining');
+
+randomizeParameters();
 
 const renderer = new Renderer(outputCanvas);
 renderer.updatesPerFrame = inputUpdatesPerFrame.value;
@@ -38,6 +53,20 @@ renderer.on('render', () => {
 });
 
 document.getElementById('button-apply').addEventListener('click', () => {
+	renderer.stop(() => {
+		if (
+			renderer.height !== inputHeight.value ||
+			renderer.width !== inputWidth.value
+		) renderer.setSize(inputWidth.value, inputHeight.value);
+
+		renderer.updatesPerFrame = inputUpdatesPerFrame.value;
+		renderer.start(inputSeed.value, inputVariance.value);
+	});
+});
+
+document.getElementById('button-randomize').addEventListener('click', () => {
+	randomizeParameters();
+
 	renderer.stop(() => {
 		if (
 			renderer.height !== inputHeight.value ||
