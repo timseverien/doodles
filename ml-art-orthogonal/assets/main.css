@@ -4,6 +4,10 @@
 	box-sizing: border-box;
 }
 
+:focus {
+	outline: 0.0125rem solid #596573;
+}
+
 /********************************
  * Elements
  ********************************/
@@ -20,18 +24,14 @@ body {
 button {
 	display: inline-block;
 	padding: 1rem;
-	border: 0;
+	border: 1px solid #db254c;
 	background-color: #ff3562;
-	box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
 	color: #fff;
 	font-weight: 700;
 	text-transform: uppercase;
 }
 button:hover {
-	background-color: #f5315c;
-}
-button:focus {
-	outline: 0.125rem solid #f4f4f4;
+	background-color: #db254c;
 }
 
 canvas {
