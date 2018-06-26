@@ -33,7 +33,10 @@ export default class AnimationLoop {
 
 		this._isStopped = true;
 		cancelAnimationFrame(this._rid);
-		requestAnimationFrame(callback);
+
+		if (typeof callback === 'function') {
+			requestAnimationFrame(callback);
+		}
 	}
 
 	_next(time) {

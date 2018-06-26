@@ -6,7 +6,7 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>Document</title>
 
-	<link rel="stylesheet" href="assets/main.css">
+	<link rel="stylesheet" href="assets/styles/main.css">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700,900">
 </head>
 <body>
@@ -14,66 +14,66 @@
 	<h1 class="visually-hidden">Abstract Art by a Neural Network</h1>
 
 	<main class="container">
-		<div class="app card">
-			<div class="app__figure">
+		<div class="app card" data-component="app">
+			<div class="app__figure" data-component="image-renderer">
 				<figure class="figure">
 					<canvas data-ref="output-canvas"></canvas>
 					<figcaption class="figure__meta">
-						<span class="figure__meta-item" data-ref="output-progress"></span>
-						<span class="figure__meta-item" data-ref="output-time-remaining"></span>
+						<span class="figure__meta-item"></span>
+						<span class="figure__meta-item"></span>
 					</figcaption>
 				</figure>
 			</div>
 
-			<div class="app__settings-input">
+			<div class="app__settings-input" data-component="settings-render">
 				<div class="form-control">
 					<label for="input-seed" class="form-control__label">Seed</label>
-					<input type="number" min="0" step="1" id="input-seed" data-ref="input-seed" class="form-control__field">
+					<input type="number" min="0" step="1" id="input-seed" class="form-control__field" data-ref="input-seed">
 				</div>
 
 				<div class="form-control">
 					<label for="input-time" class="form-control__label">Time</label>
-					<input type="number" step="1" id="input-time" data-ref="input-time" class="form-control__field">
+					<input type="number" step="1" id="input-time" class="form-control__field" data-ref="input-time">
 				</div>
 
 				<div class="form-control">
 					<label for="input-variance" class="form-control__label">Variance</label>
-					<input type="number" min="128" max="1024" step="1" id="input-variance" data-ref="input-variance" class="form-control__field">
+					<input type="number" min="128" max="1024" step="1" id="input-variance" class="form-control__field"  data-ref="input-variance">
 				</div>
 			</div>
 
-			<div class="app__settings-image">
+			<div class="app__settings-image" data-component="settings-image">
 				<fieldset class="form-control">
 					<legend class="form-control__label">Resolution</legend>
 
 					<div class="field-group">
 						<div class="field-group__field">
 							<label for="input-width" class="visually-hidden">Width</label>
-							<input type="number" min="1" value="128" step="1" id="input-width" data-ref="input-width" class="form-control__field">
+							<input type="number" min="1" value="128" step="1" id="input-width" class="form-control__field" data-ref="input-width">
 						</div>
 						<div class="field-group__separator">&times;</div>
 						<div class="field-group__field">
 							<label for="input-width" class="visually-hidden">Height</label>
-							<input type="number" min="1" value="64" step="1" id="input-height" data-ref="input-height" class="form-control__field">
+							<input type="number" min="1" value="64" step="1" id="input-height" class="form-control__field" data-ref="input-height">
 						</div>
 					</fieldset>
 
 					<div class="form-control">
 						<label for="input-updates-per-frame" class="form-control__label">Updates per frame</label>
 						<small>Amount of pixels to be calculated per frame. Increasing this value may cause an unresponsive UI. Use with caution!</small>
-						<input type="number" min="0" max="512" step="1" value="4" id="input-updates-per-frame" data-ref="input-updates-per-frame" class="form-control__field">
+						<input type="number" min="0" max="512" step="1" value="4" id="input-updates-per-frame" class="form-control__field" data-ref="input-updates-per-frame">
 					</div>
 				</div>
 
 				<div>
-						<button data-ref="button-randomize">Randomize</button>
-						<button data-ref="button-apply">Apply changes</button>
+						<button>Randomize</button>
+						<button>Apply changes</button>
 				</div>
 			</div>
 		</div>
 	</main>
 
 	<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.11.7"></script>
-	<script type="module" src="./assets/main.js"></script>
+	<script type="module" src="./assets/scripts/main.js"></script>
 </body>
 </html>
