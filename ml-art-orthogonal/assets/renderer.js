@@ -12,8 +12,7 @@ export default class Renderer extends EventEmitter {
 		this.model = null;
 		this.progress = 0;
 		this.updatesPerFrame = 1;
-
-		this.aspect = this.width / this.height;
+		this.z = 0;
 
 		this.animationLoop = new AnimationLoop((_, frame) => {
 			for (let i = 0; i < this.updatesPerFrame; i++) {
@@ -35,20 +34,16 @@ export default class Renderer extends EventEmitter {
 		this.trigger('render');
 	}
 
-	setSize(width, height) {
-		this.height = height;
-		this.width = width;
-	}
-
-	start(seed, variance) {
+	start(seed, variance, z = 0) {
 		if (this.model) {
 			tf.dispose(this.model);
 			this.model = null;
 		}
 
 		this.imageData = this.context.createImageData(this.width, this.height);
-		this.model = Renderer.createModel(seed, variance, 8, 32);
+		this.model = Renderer.createModel(seed, variance);
 		this.progress = 0;
+		this.z = z;
 
 		this.animationLoop.start();
 	}
@@ -65,20 +60,24 @@ export default class Renderer extends EventEmitter {
 	update(epoch) {
 		this.progress = Math.min(1, epoch / this.pixelCount);
 
+		const aspect = this.width / this.height;
 		const imageDataIndex = 4 * epoch;
 		const x = epoch % this.width;
 		const y = Math.floor(epoch / this.width) % this.height;
-		const xNormalized = (x / (this.width - 1) * 2 - 1) * 0.5 * this.aspect;
+		const xNormalized = (x / (this.width - 1) * 2 - 1) * aspect;
 		const yNormalized = y / (this.height - 1) * 2 - 1;
 		const input = [
 			xNormalized,
 			yNormalized,
 			Math.sqrt(xNormalized * xNormalized + yNormalized * yNormalized),
+			this.z,
 		];
 
 		const [r, g, b] = tf.tidy(() => {
 			return this.model
 				.predict(tf.tensor(input, [1, input.length]))
+				.mul(tf.scalar(0.5))
+				.add(tf.scalar(0.5))
 				.dataSync();
 		});
 
@@ -91,6 +90,7 @@ export default class Renderer extends EventEmitter {
 	}
 
 	set height(height) {
+
 		this.context.canvas.height = height;
 	}
 
@@ -115,15 +115,6 @@ export default class Renderer extends EventEmitter {
 	}
 
 	static createModel(seed, variance, depth = 8, width = 8) {
-		// const depth = 8
-    // const width = 8
-    // for (var i = 0; i < depth; ++i) {
-    //     let y = tf.layers.dense({ units: width, kernelInitializer: init, activation: 'sigmoid' }).apply(x) as tf.SymbolicTensor
-    //     x = tf.layers.concatenate({}).apply([x, y]) as tf.SymbolicTensor
-    // }
-
-    // return x
-
 		const kernelInitializer = tf.initializers.varianceScaling({
 			distribution: 'normal',
 			mode: 'fanIn',
@@ -131,7 +122,7 @@ export default class Renderer extends EventEmitter {
 			seed,
 		});
 
-		const inputs = tf.input({ shape: [3] });
+		const inputs = tf.input({ shape: [4] });
 		let outputs = inputs;
 
 		for (let i = 0; i < depth; i++) {

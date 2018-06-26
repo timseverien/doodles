@@ -7,18 +7,18 @@ export default class AnimationLoop {
 		}
 
 		this._callback = callback;
-		this._frame = 0;
 		this._isStopped = false;
 		this._onStopCallback = null;
 		this._rId = null;
 		this._timePrevious = 0;
+		this.frame = 0;
 		this.frameRate = 1;
 	}
 
 	start() {
 		const now = performance.now();
 
-		this._frame = 0;
+		this.frame = 0;
 		this._isStopped = false;
 		this._timePrevious = now;
 
@@ -45,6 +45,6 @@ export default class AnimationLoop {
 		this.frameRate = 1 / delta;
 
 		requestAnimationFrame(this._next.bind(this));
-		this._callback(time, this._frame++);
+		this._callback(time, this.frame++);
 	}
 }
