@@ -18,6 +18,7 @@ body {
 }
 
 button {
+	display: inline-block;
 	padding: 1rem;
 	border: 0;
 	background-color: #ff3562;
@@ -68,17 +69,7 @@ h1 {
  * Objects
  ********************************/
 
-.app {
-	display: grid;
-	margin-top: 1rem;
-
-	grid-template-areas: 'figure'
-		'settings-input'
-		'settings-image'
-		'settings-actions';
-	grid-template-columns: 1fr;
-	gap: 1rem;
-}
+.app {}
 .app__figure {
 	grid-area: figure;
 }
@@ -93,16 +84,17 @@ h1 {
 }
 @media only screen and (min-width: 36rem) {
 	.app {
+		display: grid;
 		grid-template-areas: 'figure figure'
 			'settings-input settings-image'
-			'settings-actions .';
+			'settings-actions settings-actions';
 		grid-template-columns: 1fr 1fr;
+		gap: 1rem;
 	}
 }
 
 .container {
-	padding-left: 1rem;
-	padding-right: 1rem;
+	padding: 1rem;
 	margin-left: auto;
 	margin-right: auto;
 	max-width: 48rem;
@@ -113,7 +105,7 @@ h1 {
  ********************************/
 
 .card {
-	padding: 1rem 1rem 0;
+	padding: 1rem;
 	overflow: hidden;
 	background-color: #fff;
 	box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);

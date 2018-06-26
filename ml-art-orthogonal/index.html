@@ -13,54 +13,58 @@
 
 	<h1 class="visually-hidden">Abstract Art by a Neural Network</h1>
 
-	<main class="container app">
-		<div class="app__figure">
-			<figure class="card figure">
-				<canvas id="output-canvas"></canvas>
-				<figcaption class="figure__meta">
-					<span class="figure__meta-item" id="output-progress"></span>
-					<span class="figure__meta-item" id="output-time-remaining"></span>
-				</figcaption>
-			</figure>
-		</div>
-
-		<div class="app__settings-input card">
-			<div class="form-control">
-				<label for="input-variance" class="form-control__label">Variance</label>
-				<input type="number" min="0" step="1" value="8" id="input-variance" class="form-control__field">
+	<main class="container">
+		<div class="app card">
+			<div class="app__figure">
+				<figure class="figure">
+					<canvas id="output-canvas"></canvas>
+					<figcaption class="figure__meta">
+						<span class="figure__meta-item" id="output-progress"></span>
+						<span class="figure__meta-item" id="output-time-remaining"></span>
+					</figcaption>
+				</figure>
 			</div>
 
-			<div class="form-control">
-				<label for="input-seed" class="form-control__label">Seed</label>
-				<input type="number" min="0" max="10000000000" step="1" id="input-seed" class="form-control__field">
-			</div>
-		</div>
-
-		<div class="app__settings-image card">
-			<fieldset class="form-control">
-				<legend class="form-control__label">Resolution</legend>
-
-				<div class="field-group">
-					<div class="field-group__field">
-						<label for="input-width" class="visually-hidden">Width</label>
-						<input type="number" min="1" value="128" step="1" id="input-width" class="form-control__field">
-					</div>
-					<div class="field-group__separator">&times;</div>
-					<div class="field-group__field">
-						<label for="input-width" class="visually-hidden">Height</label>
-						<input type="number" min="1" value="64" step="1" id="input-height" class="form-control__field">
-					</div>
-				</fieldset>
+			<div class="app__settings-input">
+				<div class="form-control">
+					<label for="input-variance" class="form-control__label">Variance</label>
+					<input type="number" min="0" step="1" value="8" id="input-variance" class="form-control__field">
+				</div>
 
 				<div class="form-control">
-					<label for="input-seed" class="form-control__label">Updates per frame</label>
-					<small>Amount of pixels to be calculated per frame. Increasing this value may cause an unresponsive UI. Use with caution!</small>
-					<input type="number" min="0" max="512" step="1" value="4" id="input-updates-per-frame" class="form-control__field">
+					<label for="input-seed" class="form-control__label">Seed</label>
+					<input type="number" min="0" max="10000000000" step="1" id="input-seed" class="form-control__field">
+				</div>
+			</div>
+
+			<div class="app__settings-image">
+				<fieldset class="form-control">
+					<legend class="form-control__label">Resolution</legend>
+
+					<div class="field-group">
+						<div class="field-group__field">
+							<label for="input-width" class="visually-hidden">Width</label>
+							<input type="number" min="1" value="128" step="1" id="input-width" class="form-control__field">
+						</div>
+						<div class="field-group__separator">&times;</div>
+						<div class="field-group__field">
+							<label for="input-width" class="visually-hidden">Height</label>
+							<input type="number" min="1" value="64" step="1" id="input-height" class="form-control__field">
+						</div>
+					</fieldset>
+
+					<div class="form-control">
+						<label for="input-seed" class="form-control__label">Updates per frame</label>
+						<small>Amount of pixels to be calculated per frame. Increasing this value may cause an unresponsive UI. Use with caution!</small>
+						<input type="number" min="0" max="512" step="1" value="4" id="input-updates-per-frame" class="form-control__field">
+					</div>
+				</div>
+
+				<div>
+						<button id="button-apply">Apply changes</button>
 				</div>
 			</div>
 		</div>
-
-		<button id="button-apply">Apply changes</button>
 	</main>
 
 	<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.11.7"></script>
