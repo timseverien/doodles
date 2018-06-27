@@ -8,7 +8,7 @@ const settingsConverter = {
 			seed,
 			time,
 			variance,
-		] = JSON.parse(string);
+		] = JSON.parse(`[${string}]`);
 
 		return { width, height, seed, time, variance };
 	},
@@ -20,7 +20,7 @@ const settingsConverter = {
 			settings.seed,
 			settings.time,
 			settings.variance,
-		]);
+		]).replace(/^\[|\]$/g, '');
 	}
 };
 
