@@ -16,8 +16,8 @@ export default class Densenet {
 			const input = tf.tensor(values, [1, 4]);
 
 			return this.model.predict(input)
+				.add(tf.scalar(1))
 				.mul(tf.scalar(0.5))
-				.add(tf.scalar(0.5))
 				.dataSync();
 		});
 	}
