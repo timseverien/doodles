@@ -46,6 +46,8 @@ export default class Renderer extends EventEmitter {
 		this.z = z;
 
 		this.animationLoop.start();
+
+		this.trigger('start');
 	}
 
 	stop(callback = noop) {
@@ -54,7 +56,8 @@ export default class Renderer extends EventEmitter {
 			this.model = null;
 		}
 
-		return this.animationLoop.stop(callback);
+		this.animationLoop.stop(callback);
+		this.trigger('stop');
 	}
 
 	update(epoch) {

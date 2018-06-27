@@ -15,12 +15,12 @@
 
 	<main class="container">
 		<div class="app card" data-component="app">
-			<div class="app__figure" data-component="image-renderer">
+			<div class="app__figure">
 				<figure class="figure">
-					<canvas data-ref="output-canvas"></canvas>
-					<figcaption class="figure__meta">
-						<span class="figure__meta-item"></span>
-						<span class="figure__meta-item"></span>
+					<canvas data-component="image-renderer"></canvas>
+					<figcaption class="figure__meta" data-component="image-renderer-report">
+						<span class="figure__meta-item" data-ref="report-progress"></span>
+						<span class="figure__meta-item" data-ref="report-time-remaining"></span>
 					</figcaption>
 				</figure>
 			</div>
@@ -66,8 +66,8 @@
 				</div>
 
 				<div>
-						<button>Randomize</button>
-						<button>Apply changes</button>
+						<button data-ref="button-randomize">Randomize</button>
+						<button data-ref="button-apply">Apply changes</button>
 				</div>
 			</div>
 		</div>

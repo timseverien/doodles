@@ -48,6 +48,6 @@ export default class AnimationLoop {
 		this.frameRate = 1 / delta;
 
 		requestAnimationFrame(this._next.bind(this));
-		this._callback(time, this.frame++);
+		this._callback(this.frame++, time);
 	}
 }

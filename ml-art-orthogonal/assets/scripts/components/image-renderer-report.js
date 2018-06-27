@@ -1,0 +1,37 @@
+import Base from './base.js';
+
+export default class ImageRendererReport extends Base {
+	constructor(element, imageRenderer) {
+		super(element);
+
+		this.imageRenderer = imageRenderer;
+
+		this.elementProgress = this.getElement('report-progress');
+		this.elementTimeRemaining = this.getElement('report-time-remaining');
+
+		this.imageRenderer.on('render', (progress) => this.update(progress));
+		this.imageRenderer.on('start', () => this.start());
+
+		this.start();
+	}
+
+	start() {
+		this.timeElapsed = 0;
+		this.timePrevious = performance.now();
+		this.update(0);
+	}
+
+	update(progress) {
+		const now = performance.now();
+		const delta = (now - this.timePrevious) / 1000;
+		this.timeElapsed += delta;
+
+		const timeTotal = (1 / progress) * this.timeElapsed;
+		const timeRemaining = (1 - progress) * timeTotal;
+
+		this.elementProgress.innerText = `${(100 * progress).toFixed(2)}%`;
+		this.elementTimeRemaining.innerText = `~${timeRemaining.toFixed(0)}s remaining`;
+
+		this.timePrevious = now;
+	}
+}
