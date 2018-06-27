@@ -20,17 +20,17 @@ export default class App extends Base {
 			this.getComponentElement('image-renderer-report'),
 			this.imageRenderer);
 
+		this.imageRenderer.on('start', () => this.trigger('start'));
+
 		this.getElement('button-apply').addEventListener('click', () => {
 			this.imageRenderer.restart();
 			this.imageRendererReport.start();
-			this.trigger('settingChange');
 		});
 
 		this.getElement('button-randomize').addEventListener('click', () => {
 			this.renderSettings.randomize();
 			this.imageRenderer.restart();
 			this.imageRendererReport.start();
-			this.trigger('settingChange');
 		});
 	}
 

@@ -26,13 +26,7 @@ const settingsConverter = {
 
 const app = new App(document.querySelector('[data-component="app"]'));
 
-if (window.location.hash) {
-	app.setSettings(settingsConverter.parse(window.location.hash.substr(1)));
-}
-
-app.start();
-
-app.on('settingChange', () => {
+app.on('start', () => {
 	const settings = settingsConverter.stringify({
 		height: app.imageSettings.height,
 		width: app.imageSettings.width,
@@ -44,5 +38,11 @@ app.on('settingChange', () => {
 
 	window.history.pushState(null, document.title, `#${settings}`);
 });
+
+if (window.location.hash) {
+	app.setSettings(settingsConverter.parse(window.location.hash.substr(1)));
+}
+
+app.start();
 
 window.addEventListener('beforeunload', () => app.dispose());

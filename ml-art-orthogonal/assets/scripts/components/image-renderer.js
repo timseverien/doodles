@@ -71,6 +71,7 @@ export default class ImageRenderer extends Base {
 
 		this.context.clearRect(0, 0, this.imageSettings.width, this.imageSettings.height);
 		this.animationLoop.start();
+		this.trigger('start');
 	}
 
 	stop(callback) {
