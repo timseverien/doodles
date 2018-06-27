@@ -25,8 +25,6 @@ export default class App extends Base {
 
 		this.getElement('button-randomize').addEventListener('click', () => {
 			this.renderSettings.randomize();
-			this.imageRenderer.restart();
-			this.imageRendererReport.start();
 		});
 	}
 
