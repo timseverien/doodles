@@ -32,11 +32,23 @@ export default class RenderSettings extends Base {
 		return Number.parseInt(this.inputSeed.value);
 	}
 
+	set seed(value) {
+		this.inputSeed.value = value;
+	}
+
 	get time() {
 		return Number.parseFloat(this.inputTime.value);
 	}
 
+	set time(value) {
+		this.inputTime.value = value;
+	}
+
 	get variance() {
 		return Number.parseInt(this.inputVariance.value);
+	}
+
+	set variance(value) {
+		this.inputVariance.value = value;
 	}
 }

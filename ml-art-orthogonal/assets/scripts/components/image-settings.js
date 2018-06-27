@@ -13,11 +13,19 @@ export default class ImageSettings extends Base {
 		return Number.parseInt(this.inputHeight.value);
 	}
 
+	set height(value) {
+		this.inputHeight.value = value;
+	}
+
 	get updatesPerFrame() {
 		return Number.parseInt(this.inputUpdatesPerFrame.value);
 	}
 
 	get width() {
 		return Number.parseInt(this.inputWidth.value);
+	}
+
+	set width(value) {
+		this.inputWidth.value = value;
 	}
 }

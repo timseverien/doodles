@@ -1,4 +1,5 @@
 import Base from './base.js';
+import formatDuration from '../utils/format-duration.js';
 
 export default class ImageRendererReport extends Base {
 	constructor(element, imageRenderer) {
@@ -30,7 +31,7 @@ export default class ImageRendererReport extends Base {
 		const timeRemaining = (1 - progress) * timeTotal;
 
 		this.elementProgress.innerText = `${(100 * progress).toFixed(2)}%`;
-		this.elementTimeRemaining.innerText = `~${timeRemaining.toFixed(0)}s remaining`;
+		this.elementTimeRemaining.innerText = `~${formatDuration(timeRemaining)} remaining`;
 
 		this.timePrevious = now;
 	}
