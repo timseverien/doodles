@@ -9,7 +9,11 @@ export default class RenderSettings extends Base {
 		this.inputTime = this.getElement('input-time');
 		this.inputVariance = this.getElement('input-variance');
 
+		this.inputSeed.addEventListener('input', () => this.trigger('change'));
 		this.inputSeed.max = Number.MAX_SAFE_INTEGER;
+
+		this.inputTime.addEventListener('input', () => this.trigger('change'));
+		this.inputVariance.addEventListener('input', () => this.trigger('change'));
 
 		this.randomize();
 	}
@@ -26,6 +30,8 @@ export default class RenderSettings extends Base {
 			Number.parseInt(this.inputVariance.min),
 			Number.parseInt(this.inputVariance.max),
 			Math.random()));
+
+		this.trigger('change');
 	}
 
 	get seed() {
@@ -34,6 +40,7 @@ export default class RenderSettings extends Base {
 
 	set seed(value) {
 		this.inputSeed.value = value;
+		this.trigger('change');
 	}
 
 	get time() {
@@ -42,6 +49,7 @@ export default class RenderSettings extends Base {
 
 	set time(value) {
 		this.inputTime.value = value;
+		this.trigger('change');
 	}
 
 	get variance() {
@@ -50,5 +58,6 @@ export default class RenderSettings extends Base {
 
 	set variance(value) {
 		this.inputVariance.value = value;
+		this.trigger('change');
 	}
 }

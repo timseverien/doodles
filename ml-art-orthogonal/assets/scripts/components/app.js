@@ -3,6 +3,7 @@ import RenderSettings from './render-settings.js';
 import ImageSettings from './image-settings.js';
 import ImageRenderer from './image-renderer.js';
 import ImageRendererReport from './image-renderer-report.js';
+import debounce from '../utils/debounce.js';
 
 export default class App extends Base {
 	constructor(element) {
@@ -21,11 +22,6 @@ export default class App extends Base {
 			this.imageRenderer);
 
 		this.imageRenderer.on('start', () => this.trigger('start'));
-
-		this.getElement('button-apply').addEventListener('click', () => {
-			this.imageRenderer.restart();
-			this.imageRendererReport.start();
-		});
 
 		this.getElement('button-randomize').addEventListener('click', () => {
 			this.renderSettings.randomize();
@@ -57,7 +53,15 @@ export default class App extends Base {
 		}
 	}
 
+	restart() {
+		this.imageRenderer.restart();
+		this.imageRendererReport.start();
+	}
+
 	start() {
 		this.imageRenderer.start();
+
+		this.imageSettings.on('change', debounce(this.restart.bind(this)));
+		this.renderSettings.on('change', debounce(this.restart.bind(this)));
 	}
 }

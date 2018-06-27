@@ -7,6 +7,10 @@ export default class ImageSettings extends Base {
 		this.inputHeight = this.getElement('input-height');
 		this.inputWidth = this.getElement('input-width');
 		this.inputUpdatesPerFrame = this.getElement('input-updates-per-frame');
+
+		this.inputHeight.addEventListener('input', () => this.trigger('change'));
+		this.inputWidth.addEventListener('input', () => this.trigger('change'));
+		this.inputUpdatesPerFrame.addEventListener('input', () => this.trigger('change'));
 	}
 
 	get height() {
@@ -15,6 +19,7 @@ export default class ImageSettings extends Base {
 
 	set height(value) {
 		this.inputHeight.value = value;
+		this.trigger('change');
 	}
 
 	get updatesPerFrame() {
@@ -27,5 +32,6 @@ export default class ImageSettings extends Base {
 
 	set width(value) {
 		this.inputWidth.value = value;
+		this.trigger('change');
 	}
 }
