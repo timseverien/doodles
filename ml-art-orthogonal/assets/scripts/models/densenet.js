@@ -59,34 +59,3 @@ export default class Densenet {
 		return x;
 	}
 }
-
-// const kernelInitializer = tf.initializers.varianceScaling({
-// 	distribution: 'normal',
-// 	mode: 'fanIn',
-// 	scale: variance,
-// 	seed,
-// });
-
-// const inputs = tf.input({ shape: [4] });
-// let outputs = inputs;
-
-// for (let i = 0; i < depth; i++) {
-// 	let layer = tf.layers.dense({
-// 		activation: 'sigmoid',
-// 		kernelInitializer: kernelInitializer,
-// 		units: width,
-// 	}).apply(outputs);
-
-// 	outputs = tf.layers.concatenate({}).apply([outputs, layer]);
-// }
-
-// outputs = tf.layers.dense({
-// 	activation: 'tanh',
-// 	kernelInitializer: tf.initializers.glorotNormal({ seed }),
-// 	units: 3,
-// }).apply(outputs);
-
-// return tf.model({
-// 	inputs,
-// 	outputs,
-// });
