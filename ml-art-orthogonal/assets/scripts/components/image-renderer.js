@@ -23,13 +23,13 @@ export default class ImageRenderer extends Base {
 	}
 
 	render(frame) {
-		if (frame >= this.pixelCount) {
+		if (frame * this.updatesPerFrame >= this.pixelCount) {
 			this.stop();
+			this.trigger('render', 1);
 			return;
 		}
 
 		const pixel = frame * this.updatesPerFrame;
-
 		const progress = Math.min(1, pixel / this.pixelCount);
 
 		for (let i = 0; i < this.updatesPerFrame; i++) {
