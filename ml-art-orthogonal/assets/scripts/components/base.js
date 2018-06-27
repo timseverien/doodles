@@ -1,4 +1,3 @@
-import ComponentLoader from '../utils/component-loader.js';
 import EventEmitter from '../utils/event-emitter.js';
 
 export default class Base extends EventEmitter {
@@ -18,9 +17,5 @@ export default class Base extends EventEmitter {
 
 	getElement(name) {
 		return this.element.querySelector(`[data-ref="${name}"]`);
-	}
-
-	loadSubcomponent(componentName, constructor) {
-		return ComponentLoader.loadOne(this.element, componentName, constructor);
 	}
 }

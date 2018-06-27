@@ -1,5 +1,3 @@
-import noop from './noop.js';
-
 export default class AnimationLoop {
 	constructor(callback) {
 		if (typeof callback !== 'function') {
@@ -25,7 +23,7 @@ export default class AnimationLoop {
 		this._next(now);
 	}
 
-	stop(callback = noop) {
+	stop(callback) {
 		if (this._isStopped) {
 			callback();
 			return;
