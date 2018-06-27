@@ -142,7 +142,7 @@ h1 {
 	margin-right: 0;
 }
 
-.form-control {
+.form-control:not(:last-child) {
 	margin-bottom: 1rem;
 }
 .form-control__label {
