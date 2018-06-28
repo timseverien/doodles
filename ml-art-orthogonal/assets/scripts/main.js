@@ -45,4 +45,8 @@ if (window.location.hash) {
 
 app.start();
 
+window.addEventListener('hashchange', () => {
+	app.setSettings(settingsConverter.parse(window.location.hash.substr(1)));
+});
+
 window.addEventListener('beforeunload', () => app.dispose());

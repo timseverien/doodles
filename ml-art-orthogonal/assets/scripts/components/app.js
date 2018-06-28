@@ -26,27 +26,25 @@ export default class App extends Base {
 		this.getElement('button-randomize').addEventListener('click', () => {
 			this.renderSettings.randomize();
 		});
-	}
 
-	dispose() {
-		this.imageRenderer.stop();
+		this.restartDebounced = debounce(this.restart.bind(this));
 	}
 
 	setSettings(settings) {
-		if ('height' in settings) {
+		if ('height' in settings && settings.height) {
 			this.imageSettings.height = settings.height;
 		}
-		if ('width' in settings) {
+		if ('width' in settings && settings.width) {
 			this.imageSettings.width = settings.width;
 		}
 
-		if ('seed' in settings) {
+		if ('seed' in settings && settings.seed) {
 			this.renderSettings.seed = settings.seed;
 		}
-		if ('time' in settings) {
+		if ('time' in settings && settings.time) {
 			this.renderSettings.time = settings.time;
 		}
-		if ('variance' in settings) {
+		if ('variance' in settings && settings.variance) {
 			this.renderSettings.variance = settings.variance;
 		}
 	}
@@ -59,7 +57,14 @@ export default class App extends Base {
 	start() {
 		this.imageRenderer.start();
 
-		this.imageSettings.on('change', debounce(this.restart.bind(this)));
-		this.renderSettings.on('change', debounce(this.restart.bind(this)));
+		this.imageSettings.on('change', this.restartDebounced);
+		this.renderSettings.on('change', this.restartDebounced);
+	}
+
+	stop() {
+		this.imageRenderer.stop();
+
+		this.imageSettings.off('change', this.restartDebounced);
+		this.renderSettings.off('change', this.restartDebounced);
 	}
 }
