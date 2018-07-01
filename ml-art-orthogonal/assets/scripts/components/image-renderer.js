@@ -51,7 +51,7 @@ export default class ImageRenderer extends Base {
 				xNormalized,
 				yNormalized,
 				Math.sqrt(xNormalized * xNormalized + yNormalized * yNormalized),
-				-1.6
+				this.renderSettings.time,
 			];
 		});
 

@@ -1,9 +1,10 @@
+import debounce from '../utils/debounce.js';
+
 import Base from './base.js';
 import RenderSettings from './render-settings.js';
 import ImageSettings from './image-settings.js';
 import ImageRenderer from './image-renderer.js';
 import ImageRendererReport from './image-renderer-report.js';
-import debounce from '../utils/debounce.js';
 
 export default class App extends Base {
 	constructor(element) {
@@ -59,10 +60,9 @@ export default class App extends Base {
 		if (!this.isInitialized) {
 			this.isInitialized = true;
 
-			this.imageSettings.on('change', debounce(this.restart.bind(this)));
+			this.imageSettings.on('change', debounce(() => this.restart(), 1000));
 			this.imageSettings.on('change:immediate', () => this.restart());
-
-			this.renderSettings.on('change', debounce(this.restart.bind(this), 1000));
+			this.renderSettings.on('change', debounce(() => this.restart(), 50));
 		}
 	}
 
