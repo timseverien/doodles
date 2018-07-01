@@ -11,6 +11,7 @@ export default class App extends Base {
 
 		this.imageSettings = new ImageSettings(this.getComponentElement('settings-image'));
 		this.renderSettings = new RenderSettings(this.getComponentElement('settings-render'));
+		this.isInitialized = false;
 
 		this.imageRenderer = new ImageRenderer(
 			this.getComponentElement('image-renderer'),
@@ -26,9 +27,6 @@ export default class App extends Base {
 		this.getElement('button-randomize').addEventListener('click', () => {
 			this.renderSettings.randomize();
 		});
-
-		this.restartDebounced = debounce(this.restart.bind(this));
-		this.restartDebouncedSlow = debounce(this.restart.bind(this), 1000);
 	}
 
 	setSettings(settings) {
@@ -58,14 +56,17 @@ export default class App extends Base {
 	start() {
 		this.imageRenderer.start();
 
-		this.imageSettings.on('change', this.restartDebouncedSlow);
-		this.renderSettings.on('change', this.restartDebounced);
+		if (!this.isInitialized) {
+			this.isInitialized = true;
+
+			this.imageSettings.on('change', debounce(this.restart.bind(this)));
+			this.imageSettings.on('change:immediate', () => this.restart());
+
+			this.renderSettings.on('change', debounce(this.restart.bind(this), 1000));
+		}
 	}
 
 	stop() {
 		this.imageRenderer.stop();
-
-		this.imageSettings.off('change', this.restartDebouncedSlow);
-		this.renderSettings.off('change', this.restartDebounced);
 	}
 }

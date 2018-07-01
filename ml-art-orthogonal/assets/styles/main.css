@@ -23,15 +23,15 @@ body {
 
 button {
 	display: inline-block;
-	padding: 1rem;
-	border: 1px solid #db254c;
-	background-color: #ff3562;
+	padding: 0.5rem;
+	border: 1px solid #7f7f7f;
+	background-color: #999999;
 	color: #fff;
 	font-weight: 700;
 	text-transform: uppercase;
 }
 button:hover {
-	background-color: #db254c;
+	background-color: #7f7f7f;
 }
 
 canvas {
@@ -104,6 +104,17 @@ h1 {
  * Components
  ********************************/
 
+.button--large {
+	padding: 1rem;
+}
+.button--primary {
+	border: 1px solid #db254c;
+	background-color: #ff3562;
+}
+.button--primary:hover {
+	background-color: #db254c;
+}
+
 .card {
 	padding: 1rem;
 	overflow: hidden;
@@ -149,15 +160,18 @@ h1 {
 .form-control:not(:last-child) {
 	margin-bottom: 1rem;
 }
+.form-control__field {
+	display: block;
+	width: 100%;
+}
 .form-control__label {
 	display: block;
 	font-size: smaller;
 	font-weight: bold;
 	text-transform: uppercase;
 }
-.form-control__field {
-	display: block;
-	width: 100%;
+.form-control_options {
+	margin-top: 0.5rem;
 }
 
 /********************************
