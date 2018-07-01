@@ -28,6 +28,7 @@ export default class App extends Base {
 		});
 
 		this.restartDebounced = debounce(this.restart.bind(this));
+		this.restartDebouncedSlow = debounce(this.restart.bind(this), 1000);
 	}
 
 	setSettings(settings) {
@@ -57,14 +58,14 @@ export default class App extends Base {
 	start() {
 		this.imageRenderer.start();
 
-		this.imageSettings.on('change', this.restartDebounced);
+		this.imageSettings.on('change', this.restartDebouncedSlow);
 		this.renderSettings.on('change', this.restartDebounced);
 	}
 
 	stop() {
 		this.imageRenderer.stop();
 
-		this.imageSettings.off('change', this.restartDebounced);
+		this.imageSettings.off('change', this.restartDebouncedSlow);
 		this.renderSettings.off('change', this.restartDebounced);
 	}
 }

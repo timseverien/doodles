@@ -8,12 +8,13 @@ export default class ImageRenderer extends Base {
 		super(element);
 
 		this.aspect = 1;
+		this.batchSize = 1;
 		this.context = this.element.getContext('2d');
 		this.imageSettings = imageSettings;
+		this.imageData = null;
 		this.model = null;
 		this.pixelCount = 0;
 		this.renderSettings = renderSettings;
-		this.updatesPerFrame = 1;
 
 		this.animationLoop = new AnimationLoop(frame => this.render(frame));
 	}
@@ -23,37 +24,47 @@ export default class ImageRenderer extends Base {
 	}
 
 	render(frame) {
-		if (frame * this.updatesPerFrame >= this.pixelCount) {
+		if (frame * this.batchSize >= this.pixelCount) {
 			this.stop();
 			this.trigger('render', 1);
 			return;
 		}
 
-		const pixel = frame * this.updatesPerFrame;
-		const progress = Math.min(1, pixel / this.pixelCount);
+		const pixelIndex = frame * this.batchSize;
+		const progress = Math.min(1, pixelIndex / this.pixelCount);
 
-		for (let i = 0; i < this.updatesPerFrame; i++) {
-			const x = (pixel + i) % this.element.width;
-			const y = Math.floor((pixel + i) / this.element.width) % this.element.height;
-
-			this.renderPixel(x, y);
-		}
-
+		this.renderPixel(pixelIndex);
 		this.trigger('render', progress);
 	}
 
-	renderPixel(x, y) {
-		const xNormalized = MathUtils.lerp(-1, 1, x / (this.element.width - 1)) * this.aspect;
-		const yNormalized = MathUtils.lerp(-1, 1, y / (this.element.height - 1));
-		const [r, g, b] = this.model.predict([
-			xNormalized,
-			yNormalized,
-			Math.sqrt(xNormalized * xNormalized + yNormalized * yNormalized),
-			-1.6
-		]);
+	renderPixel(pixelIndex) {
+		const imageDataIndexStart = 4 * pixelIndex;
+		const batchSize = Math.min(this.batchSize, this.pixelCount - pixelIndex);
 
-		this.context.fillStyle = `rgb(${255 * r}, ${255 * g}, ${255 * b})`;
-		this.context.fillRect(x, y, 1, 1);
+		const input = new Array(batchSize).fill().map((_, offset) => {
+			const x = (pixelIndex + offset) % this.element.width;
+			const y = Math.floor((pixelIndex + offset) / this.element.width) % this.element.height;
+			const xNormalized = MathUtils.lerp(-1, 1, x / (this.element.width - 1)) * this.aspect;
+			const yNormalized = MathUtils.lerp(-1, 1, y / (this.element.height - 1));
+
+			return [
+				xNormalized,
+				yNormalized,
+				Math.sqrt(xNormalized * xNormalized + yNormalized * yNormalized),
+				-1.6
+			];
+		});
+
+		this.model.predict(input).forEach(([r, g, b], offset) => {
+			const imageDataIndex = imageDataIndexStart + 4 * offset;
+
+			this.imageData.data[imageDataIndex + 0] = 255 * r;
+			this.imageData.data[imageDataIndex + 1] = 255 * g;
+			this.imageData.data[imageDataIndex + 2] = 255 * b;
+			this.imageData.data[imageDataIndex + 3] = 255;
+		});
+
+		this.context.putImageData(this.imageData, 0, 0);
 	}
 
 	restart() {
@@ -61,15 +72,17 @@ export default class ImageRenderer extends Base {
 	}
 
 	start() {
-		this.aspect = this.imageSettings.width / this.imageSettings.height;
-		this.element.height = this.imageSettings.height;
-		this.element.width = this.imageSettings.width;
-		this.pixelCount = this.imageSettings.height * this.imageSettings.width;
-		this.updatesPerFrame = this.imageSettings.updatesPerFrame;
+		const { batchSize, height, width } = this.imageSettings;
+		const { seed, variance } = this.renderSettings;
 
-		this.model = new DensenetModel('densenet', this.renderSettings.seed, this.renderSettings.variance);
+		this.aspect = width / height;
+		this.element.height = height;
+		this.element.width = width;
+		this.imageData = this.context.createImageData(width, height);
+		this.model = new DensenetModel('densenet', seed, variance);
+		this.pixelCount = height * width;
+		this.batchSize = batchSize;
 
-		this.context.clearRect(0, 0, this.imageSettings.width, this.imageSettings.height);
 		this.animationLoop.start();
 		this.trigger('start');
 	}

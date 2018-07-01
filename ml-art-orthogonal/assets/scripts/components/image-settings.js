@@ -4,13 +4,17 @@ export default class ImageSettings extends Base {
 	constructor(element) {
 		super(element);
 
+		this.inputBatchSize = this.getElement('input-batch-size');
 		this.inputHeight = this.getElement('input-height');
 		this.inputWidth = this.getElement('input-width');
-		this.inputUpdatesPerFrame = this.getElement('input-updates-per-frame');
 
+		this.inputBatchSize.addEventListener('input', () => this.trigger('change'));
 		this.inputHeight.addEventListener('input', () => this.trigger('change'));
 		this.inputWidth.addEventListener('input', () => this.trigger('change'));
-		this.inputUpdatesPerFrame.addEventListener('input', () => this.trigger('change'));
+	}
+
+	get batchSize() {
+		return Number.parseInt(this.inputBatchSize.value);
 	}
 
 	get height() {
@@ -20,10 +24,6 @@ export default class ImageSettings extends Base {
 	set height(value) {
 		this.inputHeight.value = value;
 		this.trigger('change');
-	}
-
-	get updatesPerFrame() {
-		return Number.parseInt(this.inputUpdatesPerFrame.value);
 	}
 
 	get width() {

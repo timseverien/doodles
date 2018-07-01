@@ -1,3 +1,5 @@
+import ArrayUtils from '../utils/array.js';
+
 export default class Densenet {
 	constructor(topology, seed, variance) {
 		this.model = Densenet.createModel(topology, seed, variance);
@@ -8,17 +10,13 @@ export default class Densenet {
 	}
 
 	predict(values) {
-		if (values.length !== 4) {
-			throw new Error(`Input should be an Array of 4 items, got ${values.length}`);
-		}
-
 		return tf.tidy(() => {
-			const input = tf.tensor(values, [1, 4]);
+			const input = tf.tensor2d(values);
 
-			return this.model.predict(input)
+			return ArrayUtils.chunk(this.model.predict(input)
 				.add(tf.scalar(1))
 				.mul(tf.scalar(0.5))
-				.dataSync();
+				.dataSync(), 3);
 		});
 	}
 
