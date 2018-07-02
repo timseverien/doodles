@@ -18,8 +18,4 @@ export default class Base extends EventEmitter {
 	getElement(name) {
 		return this.element.querySelector(`[data-ref="${name}"]`);
 	}
-
-	getElements(name) {
-		return Array.from(this.element.querySelectorAll(`[data-ref="${name}"]`));
-	}
 }

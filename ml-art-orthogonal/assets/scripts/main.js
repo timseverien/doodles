@@ -24,9 +24,9 @@ const app = new App(document.querySelector('[data-component="app"]'));
 
 app.on('start', () => {
 	const settings = settingsConverter.stringify({
-		seed: app.renderSettings.seed,
-		time: app.renderSettings.time,
-		variance: app.renderSettings.variance,
+		seed: app.formRendering.seed,
+		time: app.formRendering.time,
+		variance: app.formRendering.variance,
 	});
 
 	window.history.pushState(null, document.title, `#${settings}`);

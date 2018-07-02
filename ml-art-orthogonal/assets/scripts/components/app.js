@@ -1,8 +1,9 @@
 import debounce from '../utils/debounce.js';
 
 import Base from './base.js';
-import RenderSettings from './render-settings.js';
-import ImageSettings from './image-settings.js';
+import FormImage from './form-image.js';
+import FormRenderSpeed from './form-render-speed.js';
+import FormRendering from './form-rendering.js';
 import ImageRenderer from './image-renderer.js';
 import ImageRendererReport from './image-renderer-report.js';
 
@@ -10,37 +11,35 @@ export default class App extends Base {
 	constructor(element) {
 		super(element);
 
-		this.imageSettings = new ImageSettings(this.getComponentElement('settings-image'));
-		this.renderSettings = new RenderSettings(this.getComponentElement('settings-render'));
+		this.formImage = new FormImage(this.getComponentElement('form-image'));
+		this.formRendering = new FormRendering(this.getComponentElement('form-rendering'));
+		this.formRenderSpeed = new FormRenderSpeed(this.getComponentElement('form-render-speed'));
 		this.isInitialized = false;
 
 		this.imageRenderer = new ImageRenderer(
 			this.getComponentElement('image-renderer'),
-			this.imageSettings,
-			this.renderSettings);
+			this.formImage,
+			this.formRendering,
+			this.formRenderSpeed);
 
 		this.imageRendererReport = new ImageRendererReport(
 			this.getComponentElement('image-renderer-report'),
 			this.imageRenderer);
 
+		this.formImage.on('change', () => this.restart());
+		this.formRenderSpeed.on('change', () => this.restart());
 		this.imageRenderer.on('start', () => this.trigger('start'));
-
-		this.getElement('button-batch-size-apply').addEventListener('click', () => this.restart());
-		this.getElement('button-resolution-apply').addEventListener('click', () => this.restart());
-		this.getElement('button-randomize').addEventListener('click', () => {
-			this.renderSettings.randomize();
-		});
 	}
 
 	setSettings(settings) {
 		if ('seed' in settings && settings.seed) {
-			this.renderSettings.seed = settings.seed;
+			this.formRendering.seed = settings.seed;
 		}
 		if ('time' in settings && settings.time) {
-			this.renderSettings.time = settings.time;
+			this.formRendering.time = settings.time;
 		}
 		if ('variance' in settings && settings.variance) {
-			this.renderSettings.variance = settings.variance;
+			this.formRendering.variance = settings.variance;
 		}
 	}
 
@@ -55,8 +54,7 @@ export default class App extends Base {
 		if (!this.isInitialized) {
 			this.isInitialized = true;
 
-			this.renderSettings.on('change', debounce(() => this.restart(), 50));
-			this.imageSettings.on('change:preset', () => this.restart());
+			this.formRendering.on('change', debounce(() => this.restart(), 50));
 		}
 	}
 

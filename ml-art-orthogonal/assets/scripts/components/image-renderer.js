@@ -4,17 +4,21 @@ import AnimationLoop from '../utils/animation-loop.js';
 import MathUtils from '../utils/math.js';
 
 export default class ImageRenderer extends Base {
-	constructor(element, imageSettings, renderSettings) {
+	constructor(
+		element,
+		formImage,
+		formRendering,
+		formRenderSpeed,
+	) {
 		super(element);
 
-		this.aspect = 1;
-		this.batchSize = 1;
 		this.context = this.element.getContext('2d');
-		this.imageSettings = imageSettings;
+		this.formImage = formImage;
+		this.formRendering = formRendering;
+		this.formRenderSpeed = formRenderSpeed;
 		this.imageData = null;
 		this.model = null;
 		this.pixelCount = 0;
-		this.renderSettings = renderSettings;
 
 		this.animationLoop = new AnimationLoop(frame => this.render(frame));
 	}
@@ -24,13 +28,13 @@ export default class ImageRenderer extends Base {
 	}
 
 	render(frame) {
-		if (frame * this.batchSize >= this.pixelCount) {
+		if (frame * this.formRenderSpeed.batchSize >= this.pixelCount) {
 			this.stop();
 			this.trigger('render', 1);
 			return;
 		}
 
-		const pixelIndex = frame * this.batchSize;
+		const pixelIndex = frame * this.formRenderSpeed.batchSize;
 		const progress = Math.min(1, pixelIndex / this.pixelCount);
 
 		this.renderPixel(pixelIndex);
@@ -38,20 +42,22 @@ export default class ImageRenderer extends Base {
 	}
 
 	renderPixel(pixelIndex) {
+		const { aspect } = this.formImage;
+
 		const imageDataIndexStart = 4 * pixelIndex;
-		const batchSize = Math.min(this.batchSize, this.pixelCount - pixelIndex);
+		const batchSize = Math.min(this.formRenderSpeed.batchSize, this.pixelCount - pixelIndex);
 
 		const input = new Array(batchSize).fill().map((_, offset) => {
 			const x = (pixelIndex + offset) % this.element.width;
 			const y = Math.floor((pixelIndex + offset) / this.element.width) % this.element.height;
-			const xNormalized = MathUtils.lerp(-1, 1, x / (this.element.width - 1)) * this.aspect;
+			const xNormalized = MathUtils.lerp(-1, 1, x / (this.element.width - 1)) * aspect;
 			const yNormalized = MathUtils.lerp(-1, 1, y / (this.element.height - 1));
 
 			return [
 				xNormalized,
 				yNormalized,
 				Math.sqrt(xNormalized * xNormalized + yNormalized * yNormalized),
-				this.renderSettings.time,
+				this.formRendering.time,
 			];
 		});
 
@@ -72,16 +78,14 @@ export default class ImageRenderer extends Base {
 	}
 
 	start() {
-		const { batchSize, height, width } = this.imageSettings;
-		const { seed, variance } = this.renderSettings;
+		const { height, width } = this.formImage;
+		const { seed, variance } = this.formRendering;
 
-		this.aspect = width / height;
 		this.element.height = height;
 		this.element.width = width;
 		this.imageData = this.context.createImageData(width, height);
 		this.model = new DensenetModel('densenet', seed, variance);
 		this.pixelCount = height * width;
-		this.batchSize = batchSize;
 
 		this.animationLoop.start();
 		this.trigger('start');

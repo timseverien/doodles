@@ -55,6 +55,9 @@ input[type="text"] {
 	border: 1px solid #e0e0e0;
 	background-color: #f4f4f4;
 }
+input[type="radio"] {
+	margin: 0;
+}
 
 h1, h2, h3, h4, h5, h6 {
 	line-height: 1;

@@ -1,19 +1,22 @@
 import Base from './base.js';
 import MathUtils from '../utils/math.js';
 
-export default class RenderSettings extends Base {
+export default class FormRendering extends Base {
 	constructor(element) {
 		super(element);
 
-		this.inputSeed = this.getElement('input-seed');
-		this.inputTime = this.getElement('input-time');
-		this.inputVariance = this.getElement('input-variance');
+		this.inputSeed = this.element.elements['seed'];
+		this.inputTime = this.element.elements['time'];
+		this.inputVariance = this.element.elements['variance'];
 
+		this.element.addEventListener('input', () => this.trigger('change'));
 		this.inputSeed.addEventListener('input', () => this.trigger('change'));
 		this.inputSeed.max = Number.MAX_SAFE_INTEGER;
 
-		this.inputTime.addEventListener('input', () => this.trigger('change'));
-		this.inputVariance.addEventListener('input', () => this.trigger('change'));
+		this.element.addEventListener('click', (e) => {
+			if (e.target.name !== 'randomize') return;
+			this.randomize();
+		});
 
 		this.randomize();
 	}
