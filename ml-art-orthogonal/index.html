@@ -42,46 +42,61 @@
 
 				<div class="form-control">
 					<label for="input-variance" class="form-control__label">Variance</label>
-					<input type="number" min="128" max="1024" step="1" id="input-variance" class="form-control__field"  data-ref="input-variance">
+					<input type="number" min="512" max="2048" step="1" id="input-variance" class="form-control__field"  data-ref="input-variance">
 					<small>Creates more contrast or less blurry images.</small>
 				</div>
+
+				<button class="button button--primary" data-ref="button-randomize">Randomize</button>
 			</div>
 
 			<div class="app__settings-image" data-component="settings-image">
-				<fieldset class="form-control">
-					<legend class="form-control__label">Resolution</legend>
+				<div class="frame">
+					<fieldset class="form-control">
+						<legend class="form-control__label">Resolution</legend>
 
-					<div class="field-group">
-						<div class="field-group__field">
-							<label for="input-width" class="visually-hidden">Width</label>
-							<input type="number" min="1" value="320" step="1" id="input-width" class="form-control__field" data-ref="input-width">
+						<div class="field-group">
+							<div class="field-group__field">
+								<label for="input-width" class="visually-hidden">Width</label>
+								<input type="number" min="1" value="320" step="1" id="input-width" class="form-control__field" data-ref="input-width">
+							</div>
+							<div class="field-group__separator">&times;</div>
+							<div class="field-group__field">
+								<label for="input-width" class="visually-hidden">Height</label>
+								<input type="number" min="1" value="180" step="1" id="input-height" class="form-control__field" data-ref="input-height">
+							</div>
 						</div>
-						<div class="field-group__separator">&times;</div>
-						<div class="field-group__field">
-							<label for="input-width" class="visually-hidden">Height</label>
-							<input type="number" min="1" value="180" step="1" id="input-height" class="form-control__field" data-ref="input-height">
+
+						<div class="form-control__option-list">
+							<button class="tag form-control__option" data-ref="button-resolution" data-resolution="320x180">320&times;180</button>
+							<button class="tag form-control__option" data-ref="button-resolution" data-resolution="1280x720">1280&times;720</button>
+							<button class="tag form-control__option" data-ref="button-resolution" data-resolution="1920x1080">1920&times;1080</button>
+							<button class="tag form-control__option" data-ref="button-resolution" data-resolution="4096x2160">4096&times;2160</button>
 						</div>
-					</div>
+					</fieldset>
 
-					<div class="form-control__options">
-						<button data-ref="button-resolution" data-resolution="320x180">320&times;180</button>
-						<button data-ref="button-resolution" data-resolution="1280x720">1280&times;720</button>
-						<button data-ref="button-resolution" data-resolution="1920x1080">1920&times;1080</button>
-						<button data-ref="button-resolution" data-resolution="4096x2160">4096&times;2160</button>
+					<div class="form-control">
+							<button class="button button--primary" data-ref="button-resolution-apply">Restart with new resolution</button>
 					</div>
-				</fieldset>
-
-				<div class="form-control">
-					<label for="input-batch-size" class="form-control__label">Batch size</label>
-					<input type="number" min="0" max="512" step="1" value="256" id="input-batch-size" class="form-control__field" data-ref="input-batch-size">
-					<small>Amount of pixels to be calculated per frame. Increasing this value may cause an unresponsive UI. Use with caution!</small>
 				</div>
 
-				<button data-ref="button-apply" class="button button--large button--primary">Apply settings</button>
-		</div>
+				<div class="frame">
+					<div class="form-control">
+						<label for="input-batch-size" class="form-control__label">Batch size</label>
+						<input type="number" min="0" max="512" step="1" value="128" id="input-batch-size" class="form-control__field" data-ref="input-batch-size">
+						<small>Amount of pixels to be calculated per frame. Increasing this value may cause an unresponsive UI. Use with caution!</small>
 
-			<div>
-					<button class="button button--large button--primary" data-ref="button-randomize">Randomize</button>
+						<div class="form-control__option-list">
+							<button class="tag form-control__option" data-ref="button-batch-size" data-batch-size="128">Low-end (smartphone)</button>
+							<button class="tag form-control__option" data-ref="button-batch-size" data-batch-size="512">Medium-end (tablet, laptop)</button>
+							<button class="tag form-control__option" data-ref="button-batch-size" data-batch-size="1024">High-end (desktop)</button>
+							<button class="tag form-control__option" data-ref="button-batch-size" data-batch-size="2018">Ultra-end (gaming device)</button>
+						</div>
+					</div>
+
+					<div class="form-control">
+						<button class="button button--primary" data-ref="button-batch-size-apply">Restart with new batch size</button>
+					</div>
+				</div>
 			</div>
 		</div>
 	</main>

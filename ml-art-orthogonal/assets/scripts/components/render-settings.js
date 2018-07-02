@@ -24,7 +24,7 @@ export default class RenderSettings extends Base {
 			Number.parseInt(this.inputSeed.max),
 			Math.random()));
 
-		this.inputTime.value = Math.round(MathUtils.lerp(-2, 2, Math.random()));
+		this.inputTime.value = MathUtils.lerp(-2, 2, Math.random()).toFixed(3);
 
 		this.inputVariance.value = Math.round(MathUtils.lerp(
 			Number.parseInt(this.inputVariance.min),

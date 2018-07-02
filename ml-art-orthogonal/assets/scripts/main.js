@@ -3,20 +3,16 @@ import App from './components/app.js';
 const settingsConverter = {
 	parse(string) {
 		const [
-			width,
-			height,
 			seed,
 			time,
 			variance,
 		] = JSON.parse(`[${string}]`);
 
-		return { width, height, seed, time, variance };
+		return { seed, time, variance };
 	},
 
 	stringify(settings) {
 		return JSON.stringify([
-			settings.width,
-			settings.height,
 			settings.seed,
 			settings.time,
 			settings.variance,
@@ -28,9 +24,6 @@ const app = new App(document.querySelector('[data-component="app"]'));
 
 app.on('start', () => {
 	const settings = settingsConverter.stringify({
-		height: app.imageSettings.height,
-		width: app.imageSettings.width,
-
 		seed: app.renderSettings.seed,
 		time: app.renderSettings.time,
 		variance: app.renderSettings.variance,

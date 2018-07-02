@@ -25,19 +25,14 @@ export default class App extends Base {
 
 		this.imageRenderer.on('start', () => this.trigger('start'));
 
+		this.getElement('button-batch-size-apply').addEventListener('click', () => this.restart());
+		this.getElement('button-resolution-apply').addEventListener('click', () => this.restart());
 		this.getElement('button-randomize').addEventListener('click', () => {
 			this.renderSettings.randomize();
 		});
 	}
 
 	setSettings(settings) {
-		if ('height' in settings && settings.height) {
-			this.imageSettings.height = settings.height;
-		}
-		if ('width' in settings && settings.width) {
-			this.imageSettings.width = settings.width;
-		}
-
 		if ('seed' in settings && settings.seed) {
 			this.renderSettings.seed = settings.seed;
 		}
@@ -60,9 +55,8 @@ export default class App extends Base {
 		if (!this.isInitialized) {
 			this.isInitialized = true;
 
-			this.imageSettings.on('change', debounce(() => this.restart(), 1000));
-			this.imageSettings.on('change:immediate', () => this.restart());
 			this.renderSettings.on('change', debounce(() => this.restart(), 50));
+			this.imageSettings.on('change:preset', () => this.restart());
 		}
 	}
 

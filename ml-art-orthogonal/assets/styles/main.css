@@ -28,7 +28,6 @@ button {
 	background-color: #999999;
 	color: #fff;
 	font-weight: 700;
-	text-transform: uppercase;
 }
 button:hover {
 	background-color: #7f7f7f;
@@ -73,9 +72,7 @@ h1 {
 .app__figure {
 	grid-area: figure;
 }
-.app__settings-actions {
-	grid-area: settings-actions;
-}
+
 .app__settings-image {
 	grid-area: settings-image;
 }
@@ -86,8 +83,7 @@ h1 {
 	.app {
 		display: grid;
 		grid-template-areas: 'figure figure'
-			'settings-input settings-image'
-			'settings-actions settings-actions';
+			'settings-input settings-image';
 		grid-template-columns: 1fr 1fr;
 		gap: 1rem;
 	}
@@ -104,9 +100,6 @@ h1 {
  * Components
  ********************************/
 
-.button--large {
-	padding: 1rem;
-}
 .button--primary {
 	border: 1px solid #db254c;
 	background-color: #ff3562;
@@ -170,8 +163,29 @@ h1 {
 	font-weight: bold;
 	text-transform: uppercase;
 }
-.form-control__options {
-	margin-top: 0.5rem;
+.form-control__option {
+	margin-right: 0.5rem;
+	margin-bottom: 0.5rem;
+}
+.form-control__option-list {
+	display: flex;
+	margin: 1rem -0.5rem -0.5rem 0;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+
+.frame {
+	border: 1px solid #e0e0e0;
+	padding: 1rem;
+}
+.frame:not(:last-child) {
+	margin-bottom: 1rem;
+}
+
+.tag {
+	padding: 0.25rem 0.5rem;
+	border: 0;
+	background-color: #596573;
 }
 
 /********************************

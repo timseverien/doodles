@@ -4,7 +4,8 @@ export default class ImageSettings extends Base {
 	constructor(element) {
 		super(element);
 
-		const buttons = this.getElements('button-resolution');
+		const buttonsBatchSize = this.getElements('button-batch-size');
+		const buttonsResolution = this.getElements('button-resolution');
 
 		this.inputBatchSize = this.getElement('input-batch-size');
 		this.inputHeight = this.getElement('input-height');
@@ -15,14 +16,19 @@ export default class ImageSettings extends Base {
 		this.inputWidth.addEventListener('input', () => this.trigger('change'));
 
 		this.element.addEventListener('click', (e) => {
-			if (!buttons.includes(e.target)) return;
+			if (buttonsBatchSize.includes(e.target)) {
+				this.inputBatchSize.value = Number.parseInt(e.target.dataset.batchSize);
+				this.trigger('change:preset');
+			}
 
-			[
-				this.inputWidth.value,
-				this.inputHeight.value,
-			] = e.target.dataset.resolution.split('x');
+			if (buttonsResolution.includes(e.target)) {
+				[
+					this.inputWidth.value,
+					this.inputHeight.value,
+				] = e.target.dataset.resolution.split('x');
 
-			this.trigger('change:immediate');
+				this.trigger('change:preset');
+			}
 		});
 	}
 
