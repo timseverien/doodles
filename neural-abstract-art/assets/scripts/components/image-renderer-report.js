@@ -1,7 +1,7 @@
-import Base from './base.js';
+import BaseComponent from './base.js';
 import formatDuration from '../utils/format-duration.js';
 
-export default class ImageRendererReport extends Base {
+export default class ImageRendererReportComponent extends BaseComponent {
 	constructor(element, imageRenderer) {
 		super(element);
 

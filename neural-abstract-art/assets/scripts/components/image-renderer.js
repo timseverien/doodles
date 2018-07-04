@@ -1,9 +1,9 @@
-import Base from './base.js';
+import BaseComponent from './base.js';
 import DensenetModel from '../models/densenet.js';
 import AnimationLoop from '../utils/animation-loop.js';
 import MathUtils from '../utils/math.js';
 
-export default class ImageRenderer extends Base {
+export default class ImageRendererComponent extends BaseComponent {
 	constructor(
 		element,
 		formImage,

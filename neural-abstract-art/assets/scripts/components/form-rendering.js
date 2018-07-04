@@ -1,7 +1,7 @@
-import Base from './base.js';
+import BaseComponent from './base.js';
 import MathUtils from '../utils/math.js';
 
-export default class FormRendering extends Base {
+export default class FormRenderingComponent extends BaseComponent {
 	constructor(element) {
 		super(element);
 

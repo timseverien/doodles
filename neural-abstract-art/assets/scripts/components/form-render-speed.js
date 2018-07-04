@@ -1,4 +1,4 @@
-import Base from './base.js';
+import BaseComponent from './base.js';
 
 const batchSizes = [
 	128,
@@ -7,7 +7,7 @@ const batchSizes = [
 	2048,
 ];
 
-export default class FormRenderSpeed extends Base {
+export default class FormRenderSpeedComponent extends BaseComponent {
 	constructor(element) {
 		super(element);
 

@@ -1,6 +1,6 @@
-import Base from './base.js';
+import BaseComponent from './base.js';
 
-export default class FormImage extends Base {
+export default class FormImageComponent extends BaseComponent {
 	constructor(element) {
 		super(element);
 
