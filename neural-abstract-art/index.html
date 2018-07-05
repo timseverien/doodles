@@ -12,20 +12,18 @@
 <body>
 
 	<div class="app" data-component="app">
-		<main>
+		<main class="app__image">
 			<h1 class="visually-hidden">Abstract Art by a Neural Network</h1>
 			<figure class="figure">
-					<div class="figure__image-container">
-							<canvas class="figure__image" data-component="image-renderer"></canvas>
-					</div>
-					<figcaption class="figure__meta" data-component="image-renderer-report">
-						<span class="figure__meta-item" data-ref="report-progress"></span>
-						<span class="figure__meta-item" data-ref="report-time-remaining"></span>
-					</figcaption>
-				</figure>
+				<canvas class="figure__image" data-component="image-renderer"></canvas>
+				<figcaption class="figure__meta" data-component="image-renderer-report">
+					<span class="figure__meta-item" data-ref="report-progress"></span>
+					<span class="figure__meta-item" data-ref="report-time-remaining"></span>
+				</figcaption>
+			</figure>
 		</main>
 
-		<aside>
+		<aside class="app__settings">
 			<form data-component="settings">
 				<fieldset>
 					<legend>Render settings</legend>

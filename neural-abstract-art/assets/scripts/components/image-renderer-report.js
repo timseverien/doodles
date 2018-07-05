@@ -5,34 +5,29 @@ export default class ImageRendererReportComponent extends BaseComponent {
 	constructor(element) {
 		super(element);
 
-		// this.imageRenderer = imageRenderer;
-
-		// this.elementProgress = this.getElement('report-progress');
-		// this.elementTimeRemaining = this.getElement('report-time-remaining');
-
-		// this.imageRenderer.on('render', (progress) => this.update(progress));
-		// this.imageRenderer.on('start', () => this.start());
-
-		// this.start();
+		this.elementProgress = this.getElement('report-progress');
+		this.elementTimeRemaining = this.getElement('report-time-remaining');
+		this.timePrevious = 0;
 	}
 
-	// start() {
-	// 	this.timeElapsed = 0;
-	// 	this.timePrevious = performance.now();
-	// 	this.update(0);
-	// }
+	start() {
+		this.timeElapsed = 0;
+		this.timePrevious = performance.now();
 
-	// update(progress) {
-	// 	const now = performance.now();
-	// 	const delta = (now - this.timePrevious) / 1000;
-	// 	this.timeElapsed += delta;
+		this.update(0);
+	}
 
-	// 	const timeTotal = (1 / progress) * this.timeElapsed;
-	// 	const timeRemaining = (1 - progress) * timeTotal;
+	update(progress) {
+		const now = performance.now();
+		const delta = (now - this.timePrevious) / 1000;
+		this.timeElapsed += delta;
 
-	// 	this.elementProgress.innerText = `${(100 * progress).toFixed(2)}%`;
-	// 	this.elementTimeRemaining.innerText = `~${formatDuration(timeRemaining)} remaining`;
+		const timeTotal = (1 / progress) * this.timeElapsed;
+		const timeRemaining = (1 - progress) * timeTotal;
 
-	// 	this.timePrevious = now;
-	// }
+		this.elementProgress.innerText = `${(100 * progress).toFixed(2)}%`;
+		this.elementTimeRemaining.innerText = `~${formatDuration(timeRemaining)} remaining`;
+
+		this.timePrevious = now;
+	}
 }

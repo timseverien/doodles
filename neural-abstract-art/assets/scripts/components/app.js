@@ -18,6 +18,8 @@ export default class App extends BaseComponent {
 			this._settings,
 		);
 
+		this._renderer.on('start', () => this._rendererReport.start());
+		this._renderer.on('render', progress => this._rendererReport.update(progress));
 		this._renderer.on('finish', () => this.stop());
 	}
 
