@@ -14,10 +14,67 @@
 	<div class="app" data-component="app">
 		<main>
 			<h1 class="visually-hidden">Abstract Art by a Neural Network</h1>
+			<figure class="figure">
+					<div class="figure__image-container">
+							<canvas class="figure__image" data-component="image-renderer"></canvas>
+					</div>
+					<figcaption class="figure__meta" data-component="image-renderer-report">
+						<span class="figure__meta-item" data-ref="report-progress"></span>
+						<span class="figure__meta-item" data-ref="report-time-remaining"></span>
+					</figcaption>
+				</figure>
 		</main>
 
-		<aside data-component="settings">
+		<aside>
+			<form data-component="settings">
+				<fieldset>
+					<legend>Render settings</legend>
 
+					<div class="form-control">
+						<label for="input-seed" class="form-control__label">Seed</label>
+						<input type="number" name="seed" id="input-seed" class="form-control__field">
+					</div>
+					<div class="form-control">
+							<label for="input-time" class="form-control__label">Time</label>
+							<input type="number" name="time" id="input-time" class="form-control__field">
+					</div>
+					<div class="form-control">
+						<label for="input-variance" class="form-control__label">Variance</label>
+						<input type="number" name="variance" id="input-variance" class="form-control__field">
+					</div>
+				</fieldset>
+
+				<fieldset>
+					<legend>Image settings</legend>
+					<fieldset>
+						<legend>Resolution</legend>
+
+						<div class="form-control field-group">
+							<div class="field-group__field">
+								<label for="input-width" class="form-control__label visually-hidden">Width</label>
+								<input type="number" name="width" id="input-width" class="form-control__field">
+							</div>
+							<span class="field-group__separator">&times;</span>
+							<div class="field-group__field">
+								<label for="input-height" class="form-control__label visually-hidden">Height</label>
+								<input type="number" name="height" id="input-height" class="form-control__field">
+							</div>
+						</div>
+					</fieldset>
+				</fieldset>
+
+				<fieldset>
+					<legend>Other settings</legend>
+
+					<div class="form-control">
+						<label for="input-render-speed" class="form-control__label">Render speed</label>
+						<label><input type="radio" name="render-speed" id="input-render-speed" value="0"> Slow</label>
+						<label><input type="radio" name="render-speed" value="1"> Medium</label>
+						<label><input type="radio" name="render-speed" value="2"> Fast</label>
+						<label><input type="radio" name="render-speed" value="3"> Ultra</label>
+					</div>
+				</fieldset>
+			</form>
 		</aside>
 	</div>
 

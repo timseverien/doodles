@@ -4,48 +4,65 @@ import AnimationLoop from '../utils/animation-loop.js';
 import MathUtils from '../utils/math.js';
 
 export default class ImageRendererComponent extends BaseComponent {
-	constructor(
-		element,
-		formImage,
-		formRendering,
-		formRenderSpeed,
-	) {
+	constructor(element, settingsComponent) {
 		super(element);
 
 		this.context = this.element.getContext('2d');
-		this.formImage = formImage;
-		this.formRendering = formRendering;
-		this.formRenderSpeed = formRenderSpeed;
 		this.imageData = null;
 		this.model = null;
-		this.pixelCount = 0;
+		this.settingsComponent = settingsComponent;
 
-		this.animationLoop = new AnimationLoop(frame => this.render(frame));
+		this.animationLoop = new AnimationLoop(frame => this._render(frame));
 	}
 
-	dispose() {
-		this.model.dispose();
+	start() {
+		const {
+			height,
+			seed,
+			variance,
+			width,
+		} = this.settingsComponent;
+
+		this.element.height = height;
+		this.element.width = width;
+		this.imageData = this.context.createImageData(width, height);
+		this.model = new DensenetModel('densenet', seed, variance);
+
+		this.animationLoop.start();
+		this.trigger('start');
 	}
 
-	render(frame) {
-		if (frame * this.formRenderSpeed.batchSize >= this.pixelCount) {
+	stop(callback) {
+		this.animationLoop.stop(() => {
+			this.model.dispose();
+
+			if (typeof callback === 'function') {
+				callback();
+			}
+		});
+	}
+
+	_render(frame) {
+		if (frame * this.settingsComponent.batchSize >= this.settingsComponent.pixelCount) {
 			this.stop();
 			this.trigger('render', 1);
 			return;
 		}
 
-		const pixelIndex = frame * this.formRenderSpeed.batchSize;
-		const progress = Math.min(1, pixelIndex / this.pixelCount);
+		const pixelIndex = frame * this.settingsComponent.batchSize;
+		const progress = Math.min(1, pixelIndex / this.settingsComponent.pixelCount);
 
-		this.renderPixel(pixelIndex);
+		this._renderPixel(pixelIndex);
 		this.trigger('render', progress);
 	}
 
-	renderPixel(pixelIndex) {
-		const { aspect } = this.formImage;
+	_renderPixel(pixelIndex) {
+		const { aspect } = this.settingsComponent;
 
 		const imageDataIndexStart = 4 * pixelIndex;
-		const batchSize = Math.min(this.formRenderSpeed.batchSize, this.pixelCount - pixelIndex);
+		const batchSize = Math.min(
+			this.settingsComponent.batchSize,
+			this.settingsComponent.pixelCount - pixelIndex);
 
 		const input = new Array(batchSize).fill().map((_, offset) => {
 			const x = (pixelIndex + offset) % this.element.width;
@@ -57,7 +74,7 @@ export default class ImageRendererComponent extends BaseComponent {
 				xNormalized,
 				yNormalized,
 				Math.sqrt(xNormalized * xNormalized + yNormalized * yNormalized),
-				this.formRendering.time,
+				this.settingsComponent.time,
 			];
 		});
 
@@ -71,33 +88,5 @@ export default class ImageRendererComponent extends BaseComponent {
 		});
 
 		this.context.putImageData(this.imageData, 0, 0);
-	}
-
-	restart() {
-		this.stop(() => this.start());
-	}
-
-	start() {
-		const { height, width } = this.formImage;
-		const { seed, variance } = this.formRendering;
-
-		this.element.height = height;
-		this.element.width = width;
-		this.imageData = this.context.createImageData(width, height);
-		this.model = new DensenetModel('densenet', seed, variance);
-		this.pixelCount = height * width;
-
-		this.animationLoop.start();
-		this.trigger('start');
-	}
-
-	stop(callback) {
-		this.animationLoop.stop(() => {
-			this.dispose();
-
-			if (typeof callback === 'function') {
-				callback();
-			}
-		});
 	}
 }
