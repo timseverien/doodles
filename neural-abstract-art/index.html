@@ -16,10 +16,13 @@
 			<h1 class="visually-hidden">Abstract Art by a Neural Network</h1>
 			<figure class="figure">
 				<canvas class="figure__image" data-component="image-renderer"></canvas>
-				<figcaption class="figure__meta" data-component="image-renderer-report">
+				<div class="figure__meta" data-component="image-renderer-report" aria-hidden="true">
 					<span class="figure__meta-item" data-ref="report-progress"></span>
 					<span class="figure__meta-item" data-ref="report-time-remaining"></span>
-				</figcaption>
+					<span class="figure__meta-item">
+						<button data-ref="button-download">download image</button>
+					</span>
+				</div>
 			</figure>
 		</main>
 

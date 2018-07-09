@@ -15,6 +15,43 @@ export default class ImageRendererComponent extends BaseComponent {
 		this.animationLoop = new AnimationLoop(frame => this._render(frame));
 	}
 
+	download() {
+		const {
+			height,
+			seed,
+			time,
+			variance,
+			width,
+		} = this.settingsComponent;
+
+		const filename = `${seed}-${time}-${variance}-${width}x${height}`;
+
+		this.context.canvas.toBlob((blob) => {
+			if ('msSaveBlob' in window.navigator) {
+				window.navigator.msSaveBlob(blob, filename);
+				return;
+			}
+
+			const url = (window.URL || window.webkitURL).createObjectURL(blob);
+			const anchor = document.createElement('a');
+			anchor.style.display = 'none';
+			anchor.download = filename;
+			anchor.href = url;
+
+			// Link has to be attached to DOM to work in Firefox
+			document.body.appendChild(anchor);
+
+			// fire click
+			anchor.click();
+
+			// Link has to be attached to DOM to work in Firefox
+			requestAnimationFrame(() => {
+				document.body.removeChild(anchor);
+				(window.URL || window.webkitURL).revokeObjectURL(url);
+			});
+		}, 'image/png');
+	}
+
 	start() {
 		const {
 			height,
@@ -46,11 +83,12 @@ export default class ImageRendererComponent extends BaseComponent {
 		if (frame * this.settingsComponent.batchSize >= this.settingsComponent.pixelCount) {
 			this.stop();
 			this.trigger('render', 1);
+			this.trigger('finish');
 			return;
 		}
 
 		const pixelIndex = frame * this.settingsComponent.batchSize;
-		const progress = Math.min(1, pixelIndex / this.settingsComponent.pixelCount);
+		const progress = Math.min(1, pixelIndex / (this.settingsComponent.pixelCount - 1));
 
 		this._renderPixel(pixelIndex);
 		this.trigger('render', progress);

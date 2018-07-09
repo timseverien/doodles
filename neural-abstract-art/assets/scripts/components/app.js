@@ -7,6 +7,7 @@ export default class App extends BaseComponent {
 	constructor(element) {
 		super(element);
 
+		this._buttonDownload = this.getElement('button-download');
 		this._rendererReport = new ImageRendererReportComponent(this.getComponentElement('image-renderer-report'));
 
 		this._settings = new SettingsComponent(this.getComponentElement('settings'));
@@ -18,9 +19,23 @@ export default class App extends BaseComponent {
 			this._settings,
 		);
 
-		this._renderer.on('start', () => this._rendererReport.start());
-		this._renderer.on('render', progress => this._rendererReport.update(progress));
-		this._renderer.on('finish', () => this.stop());
+		this._renderer.on('start', () => {
+			this._rendererReport.start();
+			this._buttonDownload.disabled = true;
+		});
+
+		this._renderer.on('render', (progress) => {
+			this._rendererReport.update(progress)
+		});
+
+		this._renderer.on('finish', () => {
+			this._buttonDownload.disabled = false;
+		});
+
+		this._buttonDownload.addEventListener('click', () => {
+			if (this._buttonDownload.disabled) return;
+			this._renderer.download();
+		});
 	}
 
 	restart() {
