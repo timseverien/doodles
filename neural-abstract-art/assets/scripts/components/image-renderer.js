@@ -24,7 +24,7 @@ export default class ImageRendererComponent extends BaseComponent {
 			width,
 		} = this.settingsComponent;
 
-		const filename = `${seed}-${time}-${variance}-${width}x${height}`;
+		const filename = `${seed}-${time}-${variance}-${width}x${height}.png`;
 
 		this.context.canvas.toBlob((blob) => {
 			if ('msSaveBlob' in window.navigator) {
