@@ -78,15 +78,17 @@ export default class RenderSettingsModel {
 
 	static parse(string) {
 		const [
-			seed,
-			time,
-			variance,
+			seedString,
+			timeString,
+			varianceString,
 		] = string.split(/\|/g);
 
-		return new RenderSettingsModel(
-			Number.parseInt(seed),
-			Number.parseFloat(time),
-			Number.parseInt(variance),
-		);
+		const seed = Number.parseInt(seedString);
+		const time = Number.parseFloat(timeString);
+		const variance = Number.parseInt(varianceString);
+
+		return (seed && time && variance)
+			? new RenderSettingsModel(seed, time, variance)
+			: null;
 	}
 }

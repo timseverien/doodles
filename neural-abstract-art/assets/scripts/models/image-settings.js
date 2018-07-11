@@ -4,4 +4,15 @@ export default class ImageSettings {
 		this.renderSpeed = renderSpeed;
 		this.width = width;
 	}
+
+	setResolutionFromString(resolution) {
+		const [width, height] = resolution
+			.split(/x/g)
+			.map(n => Number.parseInt(n));
+
+		if (height && width) {
+			this.height = height;
+			this.width = width;
+		}
+	}
 }

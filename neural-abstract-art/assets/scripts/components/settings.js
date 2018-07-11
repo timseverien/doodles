@@ -33,6 +33,7 @@ export default class SettingsComponent extends BaseComponent {
 		this._inputVariance = this.element.elements.variance;
 		this._inputVariance.max = RenderSettingsModel.VARIANCE_MAX;
 		this._inputVariance.min = RenderSettingsModel.VARIANCE_MIN;
+		this._buttonRandomize = this.element.elements.randomize;
 
 		this._imageSettings = new ImageSettingsModel();
 		this._renderSettings = new RenderSettingsModel();
@@ -52,6 +53,15 @@ export default class SettingsComponent extends BaseComponent {
 		});
 
 		this.element.addEventListener('change', handleInputUpdate);
+
+		this.element.addEventListener('click', (e) => {
+			if (e.target.name !== 'resolution-preset') return;
+
+			this._imageSettings.setResolutionFromString(e.target.dataset.resolution);
+			this.trigger('change');
+		});
+
+		this._buttonRandomize.addEventListener('click', () => this._randomize());
 	}
 
 	get aspect() {
@@ -100,6 +110,10 @@ export default class SettingsComponent extends BaseComponent {
 		this._updateFields();
 	}
 
+	persist() {
+		RenderSettingsRepository.persist(this._renderSettings);
+	}
+
 	_handleInputUpdate() {
 		if (!this.element.reportValidity()) return;
 
@@ -118,8 +132,11 @@ export default class SettingsComponent extends BaseComponent {
 		this._imageSettings.width = Number.parseInt(this._inputWidth.value);
 	}
 
-	persist() {
-		RenderSettingsRepository.persist(this._renderSettings);
+	_randomize() {
+		this._renderSettings.randomize();
+		this.persist();
+
+		this.trigger('change');
 	}
 
 	_updateFields() {
