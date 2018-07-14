@@ -36,8 +36,8 @@
 }
 
 ::selection {
-	/* /* background-color: var(--color-primary); */
-	/* color: var(--color-primary--inverse); */
+	background-color: var(--color-primary);
+	color: var(--color-primary--inverse);
 }
 
 /********************************
