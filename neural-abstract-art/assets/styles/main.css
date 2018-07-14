@@ -8,7 +8,7 @@
 
 	--spacing: 2rem;
 	--spacing--small: 1rem;
-	--spacing--large: 4rem;
+	--spacing--large: 3rem;
 
 	--color-primary: #3c8fc5;
 	--color-primary--shade-1: #3784b8;
@@ -18,6 +18,7 @@
 	--color-secondary: #212e35;
 	--color-secondary--shade-1: #253842;
 	--color-secondary--shade-2: #2d4755;
+	--color-secondary--shade-3: #435a65;
 	--color-secondary--inverse: #fff;
 
 	--color-shade-1: #f8f8f8;
@@ -75,7 +76,7 @@ a:hover {
 	color: var(--color-secondary--shade-1);
 	text-decoration: none;
 }
-a:focus {
+a:active {
 	color: var(--color-secondary--shade-2);
 	text-decoration: none;
 }
@@ -156,7 +157,7 @@ label {
 	overflow: hidden;
 }
 .app__image {
-	padding: var(--spacing);
+	padding: var(--spacing--large);
 }
 .app__settings {
 	padding: var(--spacing) var(--spacing) 0 var(--spacing);
@@ -215,6 +216,23 @@ label {
 	max-height: 100%;
 	width: 100%;
 	object-fit: contain;
+}
+
+.footer {
+	line-height: 1;
+	padding: var(--spacing--small);
+	color: var(--color-secondary--shade-3);
+}
+.footer a {
+	color: inherit;
+}
+
+@media only screen and (min-width: 40em) {
+	.footer {
+		position: absolute;
+		left: 0;
+		bottom: 0;
+	}
 }
 
 .form-control {
