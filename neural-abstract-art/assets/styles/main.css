@@ -9,6 +9,20 @@
 	--spacing: 2rem;
 	--spacing--small: 1rem;
 	--spacing--large: 4rem;
+
+	--color-primary: #3c8fc5;
+	--color-primary--shade-1: #3784b8;
+	--color-primary--shade-2: #2d75a5;
+	--color-primary--inverse: #fff;
+
+	--color-secondary: #212e35;
+	--color-secondary--shade-1: #253842;
+	--color-secondary--shade-2: #2d4755;
+	--color-secondary--inverse: #fff;
+
+	--color-shade-1: #f8f8f8;
+	--color-shade-2: #ddd;
+	--color-shade-3: #aaa;
 }
 
 /********************************
@@ -21,8 +35,9 @@
 	box-sizing: border-box;
 }
 
-:focus {
-	/* outline: 0.0125rem solid #596573; */
+::selection {
+	/* /* background-color: var(--color-primary); */
+	/* color: var(--color-primary--inverse); */
 }
 
 /********************************
@@ -36,8 +51,7 @@ html {
 body {
 	padding: 0;
 	margin: 0;
-	background-color: #323942;
-	color: #fff;
+	background-color: var(--color-secondary);
 	font-family: 'Roboto', sans-serif;
 	font-size: 100%;
 	line-height: var(--line-height);
@@ -49,28 +63,40 @@ body {
 	}
 }
 
-input, textarea, select, button {
+button, input, select, textarea {
 	font-family: inherit;
 	font-size: inherit;
 }
 
+a {
+	color: var(--color-secondary);
+}
+a:hover {
+	color: var(--color-secondary--shade-1);
+	text-decoration: none;
+}
+a:focus {
+	color: var(--color-secondary--shade-2);
+	text-decoration: none;
+}
+
 button {
-	padding: 0.75rem;
+	padding: 0.5rem;
 	border: 0;
 	border-radius: 0.25rem;
-	background-color: #6b8292;
-	color: #fff;
+	background-color: var(--color-primary);
+	color: var(--color-primary--inverse);
 	font-size: var(--font-size--small);
 }
 button:disabled {
-	background-color: #ddd;
-	color: #aaa;
+	background-color: var(--color-shade-2);
+	color: var(--color-shade-3);
 }
 button:not(:disabled):hover {
-	background-color: #587081;
+	background-color: var(--color-primary--shade-1);
 }
 button:not(:disabled):active {
-	background-color: #4b6070;
+	background-color: var(--color-primary--shade-2);
 }
 
 canvas {
@@ -100,13 +126,13 @@ input[type="number"],
 input[type="text"] {
 	padding: 0.5rem 0;
 	border: 0;
-	border-bottom: 1px solid #ccc;
+	border-bottom: 1px solid var(--color-shade-2);
 	background-color: transparent;
 	color: inherit;
 }
 input[type="number"]:focus,
 input[type="text"]:focus {
-	border-bottom-color: #000;
+	border-bottom-color: var(--color-shade-3);
 	outline: 0;
 }
 
@@ -204,9 +230,8 @@ label {
 }
 
 .settings {
-	background-color: #fafafa;
-	box-shadow: 0 0 0.25rem #000;
-	color: #222;
+	background-color: var(--color-shade-1);
+	color: var(--color-secondary);
 }
 .settings__section:not(:last-child) {
 	margin-bottom: var(--spacing);
