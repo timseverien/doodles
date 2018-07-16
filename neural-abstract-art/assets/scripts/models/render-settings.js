@@ -87,7 +87,7 @@ export default class RenderSettingsModel {
 		const time = Number.parseFloat(timeString);
 		const variance = Number.parseInt(varianceString);
 
-		return (seed && time && variance)
+		return (!Number.isNaN(seed) && !Number.isNaN(time) && !Number.isNaN(variance))
 			? new RenderSettingsModel(seed, time, variance)
 			: null;
 	}
