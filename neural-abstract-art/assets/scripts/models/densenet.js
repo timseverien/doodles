@@ -1,8 +1,8 @@
 import ArrayUtils from '../utils/array.js';
 
 export default class Densenet {
-	constructor(topology, seed, variance) {
-		this.model = Densenet.createModel(topology, seed, variance);
+	constructor(seed, variance) {
+		this.model = Densenet.createModel(seed, variance);
 	}
 
 	dispose() {
@@ -20,7 +20,7 @@ export default class Densenet {
 		});
 	}
 
-	static createModel(topology, seed, variance) {
+	static createModel(seed, variance) {
 		const initializer = tf.initializers.varianceScaling({
 			distribution: 'normal',
 			mode: 'fanIn',

@@ -63,7 +63,7 @@ export default class ImageRendererComponent extends BaseComponent {
 		this.element.height = height;
 		this.element.width = width;
 		this.imageData = this.context.createImageData(width, height);
-		this.model = new DensenetModel('densenet', seed, variance);
+		this.model = new DensenetModel(seed, variance);
 
 		this.animationLoop.start();
 		this.trigger('start');
