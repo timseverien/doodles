@@ -52,7 +52,14 @@ export default class SettingsComponent extends BaseComponent {
 			handleInputUpdate();
 		});
 
-		this.element.addEventListener('change', handleInputUpdate);
+		this.element.addEventListener('change', (e) => {
+			if (
+				e.target.name !== 'height' &&
+				e.target.name !== 'width'
+			) return;
+
+			handleInputUpdate();
+		});
 
 		this.element.addEventListener('click', (e) => {
 			if (e.target.name !== 'resolution-preset') return;
