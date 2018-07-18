@@ -7,8 +7,8 @@
     "build:styles": "node build/styles.js 'src/styles' 'dist/assets'",
     "build:revision": "node build/revision.js 'dist/assets' 'assets' 'src/views' '.'",
     "start": "concurrently 'npm run start:serve' 'npm run start:watch'",
-    "start:serve": "browser-sync docs -w",
-    "start:watch": "nodemon -e css,js -x 'npm run build'"
+    "start:serve": "browser-sync -w",
+    "start:watch": "nodemon --watch src -e css,html,js -x 'npm run build'"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
