@@ -26,8 +26,6 @@ const manifest = {};
 		return fs.copy(filePath, filePathHashed);
 	}));
 
-	console.log(manifest);
-
 	await Promise.all(filesMarkup.map(async (filePath) => {
 		const filePathRelative = path.relative(ARG_PATH_MARKUP_SOURCE, filePath);
 		const filePathTarget = path.join(ARG_PATH_MARKUP_DESTINATION, filePathRelative);
