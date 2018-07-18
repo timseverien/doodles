@@ -2,10 +2,10 @@
   "private": true,
   "scripts": {
     "build": "npm run build:clean; concurrently 'npm run build:scripts' 'npm run build:styles'; npm run build:revision",
-    "build:clean": "concurrently 'node build/clean.js dist' 'node build/clean.js docs'",
+    "build:clean": "concurrently 'node build/clean.js assets' 'node build/clean.js dist'",
     "build:scripts": "rollup -c",
     "build:styles": "node build/styles.js 'src/styles' 'dist/assets'",
-    "build:revision": "node build/revision.js 'dist/assets' 'docs/assets' 'src/views' 'docs'",
+    "build:revision": "node build/revision.js 'dist/assets' 'assets' 'src/views' '.'",
     "start": "concurrently 'npm run start:serve' 'npm run start:watch'",
     "start:serve": "browser-sync docs -w",
     "start:watch": "nodemon -e css,js -x 'npm run build'"
