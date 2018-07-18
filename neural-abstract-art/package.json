@@ -1,9 +1,17 @@
 {
   "private": true,
   "scripts": {
-    "start": "browser-sync start -s -w"
+    "build": "concurrently 'npm run build:scripts' 'npm run build:styles'",
+    "build:scripts": "",
+    "build:styles": "",
+    "start": "concurrently 'npm run start:serve' 'npm run start:watch'",
+    "start:serve": "browser-sync docs -w",
+    "start:watch": "nodemon -e css,js -x 'npm run build'"
   },
   "devDependencies": {
-    "browser-sync": "^2.24.4"
+    "browser-sync": "^2.24.4",
+    "concurrently": "^3.6.0",
+    "nodemon": "^1.18.3",
+    "rollup": "^0.63.2"
   }
 }
