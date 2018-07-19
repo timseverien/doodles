@@ -30,9 +30,9 @@ export default class SettingsComponent extends BaseComponent {
 		this._inputSeed.step = 1;
 		this._inputTime = this.element.elements.time;
 		this._inputTime.step = 1 / Math.pow(10, RenderSettingsModel.TIME_PRECISION);
-		this._inputVariance = this.element.elements.variance;
-		this._inputVariance.max = RenderSettingsModel.VARIANCE_MAX;
-		this._inputVariance.min = RenderSettingsModel.VARIANCE_MIN;
+		this._inputSharpness = this.element.elements.sharpness;
+		this._inputSharpness.max = RenderSettingsModel.SHARPNESS_MAX;
+		this._inputSharpness.min = RenderSettingsModel.SHARPNESS_MIN;
 		this._buttonRandomize = this.element.elements.randomize;
 
 		// Device settings
@@ -54,7 +54,7 @@ export default class SettingsComponent extends BaseComponent {
 				e.target !== this._inputDeviceStrength &&
 				e.target !== this._inputSeed &&
 				e.target !== this._inputTime &&
-				e.target !== this._inputVariance
+				e.target !== this._inputSharpness
 			) return;
 
 			handleInputUpdate();
@@ -107,8 +107,8 @@ export default class SettingsComponent extends BaseComponent {
 		return this._renderSettings.time;
 	}
 
-	get variance() {
-		return this._renderSettings.variance;
+	get sharpness() {
+		return this._renderSettings.sharpness;
 	}
 
 	get width() {
@@ -140,7 +140,7 @@ export default class SettingsComponent extends BaseComponent {
 	_hydrate() {
 		this._renderSettings.seed = Number.parseInt(this._inputSeed.value);
 		this._renderSettings.time = Number.parseFloat(this._inputTime.value);
-		this._renderSettings.variance = Number.parseInt(this._inputVariance.value);
+		this._renderSettings.sharpness = Number.parseInt(this._inputSharpness.value);
 
 		this._imageSettings.height = Number.parseInt(this._inputHeight.value);
 		this._imageSettings.width = Number.parseInt(this._inputWidth.value);
@@ -158,7 +158,7 @@ export default class SettingsComponent extends BaseComponent {
 	_updateFields() {
 		this._inputSeed.value = this._renderSettings.seed;
 		this._inputTime.value = this._renderSettings.time;
-		this._inputVariance.value = this._renderSettings.variance;
+		this._inputSharpness.value = this._renderSettings.sharpness;
 
 		this._inputHeight.value = this._imageSettings.height;
 		this._inputWidth.value = this._imageSettings.width;

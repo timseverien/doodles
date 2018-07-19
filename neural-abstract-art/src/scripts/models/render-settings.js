@@ -4,11 +4,11 @@ export default class RenderSettingsModel {
 	constructor(
 		seed = RenderSettingsModel.getRandomSeed(),
 		time = RenderSettingsModel.getRandomTime(),
-		variance = RenderSettingsModel.getRandomVariance(),
+		sharpness = RenderSettingsModel.getRandomSharpness(),
 	) {
 		this.seed = seed;
 		this.time = time;
-		this.variance = variance;
+		this.sharpness = sharpness;
 	}
 
 	static get SEED_MIN() {
@@ -31,22 +31,22 @@ export default class RenderSettingsModel {
 		return 4;
 	}
 
-	static get VARIANCE_MIN() {
+	static get SHARPNESS_MIN() {
 		return 0;
 	}
 
-	static get VARIANCE_MAX() {
-		return 2048;
+	static get SHARPNESS_MAX() {
+		return Math.pow(2, 12);
 	}
 
 	randomize() {
 		this.seed = RenderSettingsModel.getRandomSeed();
 		this.time = RenderSettingsModel.getRandomTime();
-		this.variance = RenderSettingsModel.getRandomVariance();
+		this.sharpness = RenderSettingsModel.getRandomSharpness();
 	}
 
 	toString() {
-		return `${this.seed}|${this.time}|${this.variance}`;
+		return `${this.seed}|${this.time}|${this.sharpness}`;
 	}
 
 	static getRandomSeed() {
@@ -68,10 +68,10 @@ export default class RenderSettingsModel {
 		return Math.floor(value * multiplier) / multiplier;
 	}
 
-	static getRandomVariance() {
+	static getRandomSharpness() {
 		return Math.floor(MathUtils.lerp(
-			RenderSettingsModel.VARIANCE_MIN,
-			RenderSettingsModel.VARIANCE_MAX,
+			RenderSettingsModel.SHARPNESS_MIN,
+			RenderSettingsModel.SHARPNESS_MAX,
 			Math.random()
 		));
 	}
@@ -80,15 +80,15 @@ export default class RenderSettingsModel {
 		const [
 			seedString,
 			timeString,
-			varianceString,
+			sharpnessString,
 		] = string.split(/\|/g);
 
 		const seed = Number.parseInt(seedString);
 		const time = Number.parseFloat(timeString);
-		const variance = Number.parseInt(varianceString);
+		const sharpness = Number.parseInt(sharpnessString);
 
-		return (!Number.isNaN(seed) && !Number.isNaN(time) && !Number.isNaN(variance))
-			? new RenderSettingsModel(seed, time, variance)
+		return (!Number.isNaN(seed) && !Number.isNaN(time) && !Number.isNaN(sharpness))
+			? new RenderSettingsModel(seed, time, sharpness)
 			: null;
 	}
 }

@@ -20,11 +20,11 @@ export default class ImageRendererComponent extends BaseComponent {
 			height,
 			seed,
 			time,
-			variance,
+			sharpness,
 			width,
 		} = this.settingsComponent;
 
-		const filename = `${seed}-${time}-${variance}-${width}x${height}.png`;
+		const filename = `${seed}-${time}-${sharpness}-${width}x${height}.png`;
 
 		this.context.canvas.toBlob((blob) => {
 			if ('msSaveBlob' in window.navigator) {
@@ -56,14 +56,14 @@ export default class ImageRendererComponent extends BaseComponent {
 		const {
 			height,
 			seed,
-			variance,
+			sharpness,
 			width,
 		} = this.settingsComponent;
 
 		this.element.height = height;
 		this.element.width = width;
 		this.imageData = this.context.createImageData(width, height);
-		this.model = new DensenetModel(seed, variance);
+		this.model = new DensenetModel(seed, sharpness);
 
 		this.animationLoop.start();
 		this.trigger('start');

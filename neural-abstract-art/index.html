@@ -6,7 +6,7 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>Abstract Art by a Neural Network</title>
 
-	<link rel="stylesheet" href="assets/main-0427bf27ed.css">
+	<link rel="stylesheet" href="assets/main-4101b8b59a.css">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700">
 </head>
 <body>
@@ -51,9 +51,13 @@
 						<small>Slightly alters the image. Useful for tweaking.</small>
 					</div>
 					<div class="form-control">
-						<label for="input-variance" class="heading">Variance</label>
-						<input type="number" name="variance" id="input-variance" class="form-control__field">
+						<label for="input-sharpness" class="heading">Sharpness</label>
 						<small>Makes edges more distinguishable.</small>
+						<input type="range" name="sharpness" id="input-sharpness" class="form-control__field">
+						<div class="field-group">
+							<small class="field-group__field">blurry</small>
+							<small class="field-group__field text-align-right">sharp</small>
+						</div>
 					</div>
 
 					<button type="button" name="randomize">randomize</button>
@@ -108,6 +112,6 @@
 	</footer>
 
 	<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.11.7"></script>
-	<script src="assets/main-08da3d7c74.js"></script>
+	<script src="assets/main-283db6fc6e.js"></script>
 </body>
 </html>
