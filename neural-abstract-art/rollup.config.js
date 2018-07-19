@@ -1,5 +1,4 @@
 import babel from 'rollup-plugin-babel';
-import hash from 'rollup-plugin-hash';
 import { uglify } from 'rollup-plugin-uglify';
 
 export default {
