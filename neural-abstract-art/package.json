@@ -1,14 +1,14 @@
 {
   "private": true,
   "scripts": {
-    "build": "npm run build:clean; concurrently 'npm run build:scripts' 'npm run build:styles'; npm run build:revision",
-    "build:clean": "concurrently 'node build/clean.js assets' 'node build/clean.js dist'",
+    "build": "npm run build:clean && concurrently \"npm run build:scripts\" \"npm run build:styles\" && npm run build:revision",
+    "build:clean": "concurrently \"node build/clean.js assets\" \"node build/clean.js dist\"",
     "build:scripts": "rollup -c",
-    "build:styles": "node build/styles.js 'src/styles' 'dist/assets'",
-    "build:revision": "node build/revision.js 'dist/assets' 'assets' 'src/views' '.'",
-    "start": "concurrently 'npm run start:serve' 'npm run start:watch'",
+    "build:styles": "node build/styles.js \"src/styles\" \"dist/assets\"",
+    "build:revision": "node build/revision.js \"dist/assets\" \"assets\" \"src/views\" \".\"",
+    "start": "concurrently \"npm run start:serve\" \"npm run start:watch\"",
     "start:serve": "browser-sync -w",
-    "start:watch": "nodemon --watch src -e css,html,js -x 'npm run build'"
+    "start:watch": "nodemon --watch src -e css,html,js -x \"npm run build\""
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
