@@ -236,7 +236,7 @@ label {
 }
 
 .form-control {
-	margin-bottom: var(--spacing);
+	margin-bottom: var(--spacing--small);
 }
 .form-control__field {
 	display: block;
