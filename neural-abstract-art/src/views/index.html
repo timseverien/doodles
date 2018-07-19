@@ -89,11 +89,14 @@
 					<legend class="visually-hidden">Other settings</legend>
 
 					<div class="form-control">
-						<label for="input-render-speed" class="heading">Render speed</label>
-						<label><input type="radio" name="render-speed" id="input-render-speed" value="0"> Slow</label>
-						<label><input type="radio" name="render-speed" value="1"> Medium</label>
-						<label><input type="radio" name="render-speed" value="2"> Fast</label>
-						<label><input type="radio" name="render-speed" value="3"> Ultra</label>
+						<label for="input-device-strength" class="heading">Device strength</label>
+						<small>Speeds up the rendering process. Optimal value varies per device and browser, so use with caution.</small>
+
+						<input type="range" name="device-strength" id="input-device-strength" class="form-control__field">
+						<div class="field-group">
+							<small class="field-group__field">weak (smartphone)</small>
+							<small class="field-group__field text-align-right">ultra (gaming desktop)</small>
+						</div>
 					</div>
 				</fieldset>
 			</form>

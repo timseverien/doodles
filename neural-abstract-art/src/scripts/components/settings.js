@@ -1,3 +1,4 @@
+import DeviceSettingsModel from '../models/device-settings.js';
 import ImageSettingsModel from '../models/image-settings.js';
 import RenderSettingsModel from '../models/render-settings.js';
 import RenderSettingsRepository from '../repositories/render-settings.js';
@@ -19,7 +20,6 @@ export default class SettingsComponent extends BaseComponent {
 		// Image settings
 		this._inputHeight = this.element.elements.height;
 		this._inputHeight.min = 1;
-		this._inputRenderSpeed = this.element.elements['render-speed'];
 		this._inputWidth = this.element.elements.width;
 		this._inputWidth.min = 1;
 
@@ -35,6 +35,14 @@ export default class SettingsComponent extends BaseComponent {
 		this._inputVariance.min = RenderSettingsModel.VARIANCE_MIN;
 		this._buttonRandomize = this.element.elements.randomize;
 
+		// Device settings
+		this._inputDeviceStrength = this.element.elements['device-strength'];
+		this._inputDeviceStrength.min = 0;
+		this._inputDeviceStrength.max = 3;
+		this._inputDeviceStrength.step = 1;
+		this._inputDeviceStrength.value = 0;
+
+		this._deviceSettings = new DeviceSettingsModel();
 		this._imageSettings = new ImageSettingsModel();
 		this._renderSettings = new RenderSettingsModel();
 
@@ -44,6 +52,7 @@ export default class SettingsComponent extends BaseComponent {
 
 		this.element.addEventListener('input', (e) => {
 			if (
+				e.target !== this._inputDeviceStrength &&
 				e.target !== this._inputSeed &&
 				e.target !== this._inputTime &&
 				e.target !== this._inputVariance
@@ -54,8 +63,8 @@ export default class SettingsComponent extends BaseComponent {
 
 		this.element.addEventListener('change', (e) => {
 			if (
-				e.target.name !== 'height' &&
-				e.target.name !== 'width'
+				e.target !== this._inputWidth &&
+				e.target !== this._inputHeight
 			) return;
 
 			handleInputUpdate();
@@ -76,11 +85,11 @@ export default class SettingsComponent extends BaseComponent {
 	}
 
 	get batchSize() {
-		if (!batchSizes[this._imageSettings.renderSpeed]) {
+		if (!batchSizes[this._deviceSettings.deviceStrength]) {
 			return batchSizes[0];
 		}
 
-		return batchSizes[this._imageSettings.renderSpeed];
+		return batchSizes[this._deviceSettings.deviceStrength];
 	}
 
 	get height() {
@@ -135,8 +144,9 @@ export default class SettingsComponent extends BaseComponent {
 		this._renderSettings.variance = Number.parseInt(this._inputVariance.value);
 
 		this._imageSettings.height = Number.parseInt(this._inputHeight.value);
-		this._imageSettings.renderSpeed = Number.parseInt(this._inputRenderSpeed.value);
 		this._imageSettings.width = Number.parseInt(this._inputWidth.value);
+
+		this._deviceSettings.deviceStrength = Number.parseInt(this._inputDeviceStrength.value);
 	}
 
 	_randomize() {
@@ -152,7 +162,8 @@ export default class SettingsComponent extends BaseComponent {
 		this._inputVariance.value = this._renderSettings.variance;
 
 		this._inputHeight.value = this._imageSettings.height;
-		this._inputRenderSpeed.value = this._imageSettings.renderSpeed;
 		this._inputWidth.value = this._imageSettings.width;
+
+		this._inputDeviceStrength.value = this._deviceSettings.deviceStrength;
 	}
 }

@@ -6,7 +6,7 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>Abstract Art by a Neural Network</title>
 
-	<link rel="stylesheet" href="assets/main-7a81814f66.css">
+	<link rel="stylesheet" href="assets/main-0427bf27ed.css">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700">
 </head>
 <body>
@@ -89,11 +89,14 @@
 					<legend class="visually-hidden">Other settings</legend>
 
 					<div class="form-control">
-						<label for="input-render-speed" class="heading">Render speed</label>
-						<label><input type="radio" name="render-speed" id="input-render-speed" value="0"> Slow</label>
-						<label><input type="radio" name="render-speed" value="1"> Medium</label>
-						<label><input type="radio" name="render-speed" value="2"> Fast</label>
-						<label><input type="radio" name="render-speed" value="3"> Ultra</label>
+						<label for="input-device-strength" class="heading">Device strength</label>
+						<small>Speeds up the rendering process. Optimal value varies per device and browser, so use with caution.</small>
+
+						<input type="range" name="device-strength" id="input-device-strength" class="form-control__field">
+						<div class="field-group">
+							<small class="field-group__field">weak (smartphone)</small>
+							<small class="field-group__field text-align-right">ultra (gaming desktop)</small>
+						</div>
 					</div>
 				</fieldset>
 			</form>
@@ -105,6 +108,6 @@
 	</footer>
 
 	<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.11.7"></script>
-	<script src="assets/main-bc34b992e9.js"></script>
+	<script src="assets/main-6af8867677.js"></script>
 </body>
 </html>
