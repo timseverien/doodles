@@ -38,9 +38,8 @@ export default class SettingsComponent extends BaseComponent {
 		// Device settings
 		this._inputDeviceStrength = this.element.elements['device-strength'];
 		this._inputDeviceStrength.min = 0;
-		this._inputDeviceStrength.max = 3;
+		this._inputDeviceStrength.max = batchSizes.length - 1;
 		this._inputDeviceStrength.step = 1;
-		this._inputDeviceStrength.value = 0;
 
 		this._deviceSettings = new DeviceSettingsModel();
 		this._imageSettings = new ImageSettingsModel();
