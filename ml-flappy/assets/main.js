@@ -1,26 +1,30 @@
 import Population from '../../generic-genetics/lib/population.js';
-import BirdModel from './models/bird.js';
-import BrainModel from './models/brain.js';
+import BirdObject from './objects/bird.js';
+import Game from './game.js';
 
 const population = new Population({
 	selectCount: 2,
 	size: 3,
 
 	createOrganism() {
-		return new BirdModel();
+		return new BirdObject();
 	},
 
 	createOrganismFromParents(a, b) {
 		const brain = BrainModel.fromParents(a.brain, b.brain);
 
-		return new BirdModel(brain);
+		return new BirdObject(brain);
 	},
 });
 
-population.organisms.forEach(o => o.update());
-population.nextGeneration();
-population.organisms.forEach(o => o.update());
+const canvas = document.createElement('canvas');
+canvas.height = 256;
+canvas.width = 512;
+document.body.appendChild(canvas);
 
-population.dispose();
+const game = new Game(canvas, population);
+game.start();
 
-window.addEventListener('beforeunload', () => population.dispose());
+window.addEventListener('beforeunload', () => {
+	game.stop(() => population.dispose());
+});
