@@ -1,29 +1,26 @@
 import Population from '../../generic-genetics/lib/population.js';
-import Organism from './organism.js';
+import BirdModel from './models/bird.js';
+import BrainModel from './models/brain.js';
 
 const population = new Population({
 	selectCount: 2,
 	size: 3,
 
 	createOrganism() {
-		return new Organism();
+		return new BirdModel();
 	},
 
 	createOrganismFromParents(a, b) {
-		return Organism.fromParents(a, b);
+		const brain = BrainModel.fromParents(a.brain, b.brain);
+
+		return new BirdModel(brain);
 	},
 });
 
-console.log(population.organisms.map((o) => {
-	console.log(o.brain);
-
-	return o.brain.getWeights().dataSync();
-}));
-
-population.organisms.brain.summary();
-
+population.organisms.forEach(o => o.update());
 population.nextGeneration();
+population.organisms.forEach(o => o.update());
 
-population.organisms.brain.summary();
+population.dispose();
 
-population.organisms.forEach(o => tf.dispose(o.brain));
+window.addEventListener('beforeunload', () => population.dispose());

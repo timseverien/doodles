@@ -48,12 +48,19 @@ export default class Population {
 		});
 	}
 
+	dispose() {
+		this.organisms.forEach(o => tf.dispose(o.brain));
+	}
+
 	nextGeneration() {
 		const selection = Array.from(this.organisms)
 			.sort((a, b) => b.getScore() - a.getScore())
 			.slice(0, this._selectCount);
 
-		this.organisms = new Array(this._size).fill()
+		const organismsNext = new Array(this._size).fill()
 			.map(() => this._createOrganismFromParents(...ArrayUtils.shuffle(selection).splice(0, 2)));
+
+		this.dispose();
+		this.organisms = organismsNext;
 	}
 }
