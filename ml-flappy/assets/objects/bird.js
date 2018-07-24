@@ -15,7 +15,12 @@ export default class BirdObject extends GameObject {
 		return this._score;
 	}
 
+	kill() {
+		this._isAlive = false;
+	}
+
 	render(context) {
+		context.beginPath();
 		context.arc(this.position.x, this.position.y, 4, 0, 2 * Math.PI);
 		context.fill();
 	}

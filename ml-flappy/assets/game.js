@@ -23,11 +23,23 @@ export default class Game {
 			return;
 		}
 
+		const { height, width } = this._canvas;
+
+		this._context.save();
+		this._context.clearRect(0, 0, width, height);
+		this._context.translate(10, 0);
+
 		this._population.organisms.forEach((organism) => {
-			organism.velocity.y += 0.2;
+			organism.velocity.y += Game.WORLD_GRAVITY;
 			organism.update();
 			organism.render(this._context);
+
+			if (organism.position.y > height) {
+				organism.kill();
+			}
 		});
+
+		this._context.restore();
 	}
 
 	_restart() {
@@ -35,5 +47,9 @@ export default class Game {
 			this._population.nextGeneration();
 			this.start();
 		});
+	}
+
+	static get WORLD_GRAVITY() {
+		return 0.2;
 	}
 }
