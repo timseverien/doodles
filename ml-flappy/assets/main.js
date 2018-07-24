@@ -1,5 +1,8 @@
 import Population from '../../generic-genetics/lib/population.js';
+
 import BirdObject from './objects/bird.js';
+import Vector2 from './math/vector2.js';
+import BrainModel from './models/brain.js';
 import Game from './game.js';
 
 const population = new Population({
@@ -7,13 +10,13 @@ const population = new Population({
 	size: 3,
 
 	createOrganism() {
-		return new BirdObject();
+		return new BirdObject(new Vector2(10));
 	},
 
 	createOrganismFromParents(a, b) {
 		const brain = BrainModel.fromParents(a.brain, b.brain);
 
-		return new BirdObject(brain);
+		return new BirdObject(new Vector2(10), brain);
 	},
 });
 

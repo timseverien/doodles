@@ -1,14 +1,23 @@
 import BrainModel from '../models/brain.js';
 import GameObject from './game-object.js';
+import Box from '../models/box.js';
+import Vector2 from '../math/vector2.js';
 
 export default class BirdObject extends GameObject {
-	constructor(brain) {
-		super();
+	constructor(position, brain) {
+		super(position);
 
 		this.brain = brain instanceof BrainModel ? brain : new BrainModel();
+		this.isAlive = true;
 
-		this._isAlive = true;
 		this._score = 0;
+	}
+
+	getBoundingBox() {
+		return new Box(
+			this.position,
+			new Vector2(BirdObject.SIZE, BirdObject.SIZE)
+		);
 	}
 
 	getScore() {
@@ -16,7 +25,7 @@ export default class BirdObject extends GameObject {
 	}
 
 	kill() {
-		this._isAlive = false;
+		this.isAlive = false;
 	}
 
 	render(context) {
@@ -26,7 +35,7 @@ export default class BirdObject extends GameObject {
 	}
 
 	update() {
-		if (!this._isAlive) return;
+		if (!this.isAlive) return;
 
 		const [boost] = tf.tidy(() => this.brain
 			.predict(tf.ones([1, 4]))
@@ -38,7 +47,10 @@ export default class BirdObject extends GameObject {
 
 		super.update();
 
-		// this._isAlive = false;
 		this._score++;
+	}
+
+	static get SIZE() {
+		return 4;
 	}
 }

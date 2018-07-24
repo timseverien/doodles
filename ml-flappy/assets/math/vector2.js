@@ -10,4 +10,8 @@ export default class Vector2 {
 
 		return this;
 	}
+
+	clone() {
+		return new Vector2(this.x, this.y);
+	}
 }
