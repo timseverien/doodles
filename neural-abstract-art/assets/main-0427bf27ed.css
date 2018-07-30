@@ -1,0 +1,293 @@
+/********************************
+ * Settings
+ ********************************/
+
+:root {
+	--font-size--small: 0.875rem;
+	--line-height: 1.618;
+
+	--spacing: 2rem;
+	--spacing--small: 1rem;
+	--spacing--large: 3rem;
+
+	--color-primary: #3c8fc5;
+	--color-primary--shade-1: #3784b8;
+	--color-primary--shade-2: #2d75a5;
+	--color-primary--inverse: #fff;
+
+	--color-secondary: #212e35;
+	--color-secondary--shade-1: #253842;
+	--color-secondary--shade-2: #2d4755;
+	--color-secondary--shade-3: #435a65;
+	--color-secondary--inverse: #fff;
+
+	--color-shade-1: #f8f8f8;
+	--color-shade-2: #ddd;
+	--color-shade-3: #aaa;
+}
+
+/********************************
+ * Generic
+ ********************************/
+
+*,
+*::after,
+*::before {
+	box-sizing: border-box;
+}
+
+::selection {
+	background-color: var(--color-primary);
+	color: var(--color-primary--inverse);
+}
+
+/********************************
+ * Elements
+ ********************************/
+
+html {
+	height: 100%;
+}
+
+body {
+	padding: 0;
+	margin: 0;
+	background-color: var(--color-secondary);
+	font-family: 'Roboto', sans-serif;
+	font-size: 100%;
+	line-height: var(--line-height);
+}
+@media only screen and (min-width: 40em) {
+	body {
+		height: 100%;
+		overflow: hidden;
+	}
+}
+
+button, input, select, textarea {
+	font-family: inherit;
+	font-size: inherit;
+}
+
+a {
+	color: var(--color-secondary);
+}
+a:hover {
+	color: var(--color-secondary--shade-1);
+	text-decoration: none;
+}
+a:active {
+	color: var(--color-secondary--shade-2);
+	text-decoration: none;
+}
+
+button {
+	padding: 0.5rem;
+	border: 0;
+	border-radius: 0.25rem;
+	background-color: var(--color-primary);
+	color: var(--color-primary--inverse);
+	font-size: var(--font-size--small);
+}
+button:disabled {
+	background-color: var(--color-shade-2);
+	color: var(--color-shade-3);
+}
+button:not(:disabled):hover {
+	background-color: var(--color-primary--shade-1);
+}
+button:not(:disabled):active {
+	background-color: var(--color-primary--shade-2);
+}
+
+canvas {
+	display: block;
+	height: auto;
+	width: 100%;
+}
+
+dl {
+	margin-top: 0;
+}
+dd {
+	margin: 0;
+}
+
+fieldset {
+	padding: 0;
+	border: 0;
+	margin: 0;
+}
+legend {
+	display: block;
+	padding: 0;
+}
+
+input[type="number"],
+input[type="text"] {
+	padding: 0.5rem 0;
+	border: 0;
+	border-bottom: 1px solid var(--color-shade-2);
+	background-color: transparent;
+	color: inherit;
+}
+input[type="number"]:focus,
+input[type="text"]:focus {
+	border-bottom-color: var(--color-shade-3);
+	outline: 0;
+}
+
+input[type="radio"] {
+	margin: 0;
+}
+
+label {
+	display: block;
+}
+
+/********************************
+ * Objects
+ ********************************/
+
+.app {
+	display: grid;
+	height: 100%;
+	width: 100%;
+	grid-template-columns: 1fr;
+	overflow: hidden;
+}
+.app__image {
+	padding: var(--spacing--large);
+}
+.app__settings {
+	padding: var(--spacing) var(--spacing) 0 var(--spacing);
+}
+@media only screen and (min-width: 40em) {
+	.app {
+		grid-template-columns: auto 24em;
+	}
+	.app__image {
+		height: 100vh;
+		width: 100%;
+	}
+	.app__settings {
+		height: 100vh;
+		padding: var(--spacing);
+	}
+}
+
+/********************************
+ * Components
+ ********************************/
+
+.info-list__item {
+	display: flex;
+	flex: 0 50%;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+}
+.info-list__property {
+	align-self: flex-start;
+}
+.info-list__value {
+	align-self: flex-end;
+}
+
+.field-group {
+	display: flex;
+}
+.field-group__field {
+	flex-grow: 1;
+}
+.field-group__separator {
+	margin-left: 0.5rem;
+	margin-right: 0.5rem;
+	line-height: 2.25;
+}
+
+.figure {
+	height: 100%;
+	width: 100%;
+	padding: 0;
+	margin: 0;
+}
+.figure__image {
+	max-height: 100%;
+	width: 100%;
+	object-fit: contain;
+}
+
+.footer {
+	line-height: 1;
+	padding: var(--spacing--small);
+	color: var(--color-secondary--shade-3);
+}
+.footer a {
+	color: inherit;
+}
+
+@media only screen and (min-width: 40em) {
+	.footer {
+		position: absolute;
+		left: 0;
+		bottom: 0;
+	}
+}
+
+.form-control {
+	margin-bottom: var(--spacing--small);
+}
+.form-control__field {
+	display: block;
+	width: 100%;
+}
+
+.heading {
+	font-weight: bold;
+}
+
+.settings {
+	background-color: var(--color-shade-1);
+	color: var(--color-secondary);
+}
+.settings__section:not(:last-child) {
+	margin-bottom: var(--spacing);
+}
+@media only screen and (min-width: 40em) {
+	.settings {
+		overflow-y: scroll;
+	}
+}
+
+.tag-list {
+	display: flex;
+	flex-wrap: wrap;
+}
+.tag-list__item {
+	margin-right: 0.125rem;
+	margin-bottom: 0.125rem;
+}
+
+.tag {
+	padding: 0.25rem;
+}
+
+/********************************
+ * Trumps
+ ********************************/
+
+.text-align-right {
+	text-align: right;
+}
+
+.visually-hidden {
+	height: 1px;
+	width: 1px;
+	padding: 0;
+	border: 0;
+	overflow: hidden;
+	position: absolute;
+	clip: rect(1px 1px 1px 1px);
+	clip: rect(1px, 1px, 1px, 1px);
+}
