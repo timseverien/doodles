@@ -12,7 +12,7 @@ export default class ImageRendererComponent extends BaseComponent {
 		this.canvasSegment.height = ImageRendererComponent.SEGMENT_SIZE;
 		this.canvasSegment.width = ImageRendererComponent.SEGMENT_SIZE;
 
-		this.inputDataWorker = new Worker(`/assets/workers/input-data.js?_=${Date.now()}`);
+		this.inputDataWorker = new Worker(`assets/workers/input-data.js?_=${Date.now()}`);
 		this.inputDataWorker.addEventListener('message', (e) => {
 			const { data, xOffset, yOffset } = e.data;
 
