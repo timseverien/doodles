@@ -1,17 +1,9 @@
-import DeviceSettingsModel from '../models/device-settings.js';
 import ImageSettingsModel from '../models/image-settings.js';
 import RenderSettingsModel from '../models/render-settings.js';
 import RenderSettingsRepository from '../repositories/render-settings.js';
 import debounce from '../utils/debounce.js';
 
 import BaseComponent from './base.js';
-
-const batchSizes = [
-	128,
-	512,
-	1024,
-	2048,
-];
 
 export default class SettingsComponent extends BaseComponent {
 	constructor(element) {
@@ -35,13 +27,6 @@ export default class SettingsComponent extends BaseComponent {
 		this._inputSharpness.min = RenderSettingsModel.SHARPNESS_MIN;
 		this._buttonRandomize = this.element.elements.randomize;
 
-		// Device settings
-		this._inputDeviceStrength = this.element.elements['device-strength'];
-		this._inputDeviceStrength.min = 0;
-		this._inputDeviceStrength.max = batchSizes.length - 1;
-		this._inputDeviceStrength.step = 1;
-
-		this._deviceSettings = new DeviceSettingsModel();
 		this._imageSettings = new ImageSettingsModel();
 		this._renderSettings = new RenderSettingsModel();
 
@@ -51,7 +36,6 @@ export default class SettingsComponent extends BaseComponent {
 
 		this.element.addEventListener('input', (e) => {
 			if (
-				e.target !== this._inputDeviceStrength &&
 				e.target !== this._inputSeed &&
 				e.target !== this._inputTime &&
 				e.target !== this._inputSharpness
@@ -79,24 +63,8 @@ export default class SettingsComponent extends BaseComponent {
 		this._buttonRandomize.addEventListener('click', () => this._randomize());
 	}
 
-	get aspect() {
-		return this.width / this.height;
-	}
-
-	get batchSize() {
-		if (!batchSizes[this._deviceSettings.deviceStrength]) {
-			return batchSizes[0];
-		}
-
-		return batchSizes[this._deviceSettings.deviceStrength];
-	}
-
 	get height() {
 		return this._imageSettings.height;
-	}
-
-	get pixelCount() {
-		return this.height * this.width;
 	}
 
 	get seed() {
@@ -144,8 +112,6 @@ export default class SettingsComponent extends BaseComponent {
 
 		this._imageSettings.height = Number.parseInt(this._inputHeight.value);
 		this._imageSettings.width = Number.parseInt(this._inputWidth.value);
-
-		this._deviceSettings.deviceStrength = Number.parseInt(this._inputDeviceStrength.value);
 	}
 
 	_randomize() {
@@ -162,7 +128,5 @@ export default class SettingsComponent extends BaseComponent {
 
 		this._inputHeight.value = this._imageSettings.height;
 		this._inputWidth.value = this._imageSettings.width;
-
-		this._inputDeviceStrength.value = this._deviceSettings.deviceStrength;
 	}
 }

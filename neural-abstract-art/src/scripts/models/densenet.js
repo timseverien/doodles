@@ -1,26 +1,19 @@
-import ArrayUtils from '../utils/array.js';
-
 export default class Densenet {
-	constructor(seed, variance) {
-		this.model = Densenet.createModel(seed, variance);
+	constructor(size, seed, variance) {
+		this.model = Densenet.createModel(size, seed, variance);
 	}
 
-	dispose() {
-		tf.dispose(this.model);
-	}
-
-	predict(values) {
+	predict(x) {
 		return tf.tidy(() => {
-			const input = tf.tensor2d(values);
-
-			return ArrayUtils.chunk(this.model.predict(input)
+			const y = this.model.predict(x.expandDims(0))
 				.add(tf.scalar(1))
-				.mul(tf.scalar(0.5))
-				.dataSync(), 3);
+				.mul(tf.scalar(0.5));
+
+			return tf.unstack(y).pop();
 		});
 	}
 
-	static createModel(seed, variance) {
+	static createModel(size, seed, variance) {
 		const initializer = tf.initializers.varianceScaling({
 			distribution: 'normal',
 			mode: 'fanIn',
@@ -28,7 +21,7 @@ export default class Densenet {
 			seed,
 		});
 
-		const inputs = tf.input({ shape: [4] });
+		const inputs = tf.input({ shape: [size, size, 4] });
 		let outputs = Densenet.createDensityTopology(inputs, initializer);
 
 		outputs = tf.layers.dense({

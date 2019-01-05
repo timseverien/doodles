@@ -24,11 +24,12 @@ export default class App extends BaseComponent {
 			this._buttonDownload.disabled = true;
 		});
 
-		this._renderer.on('render', (progress) => {
-			this._rendererReport.update(progress)
+		this._renderer.on('progress', (progress) => {
+			this._rendererReport.update(progress);
 		});
 
 		this._renderer.on('finish', () => {
+			this._rendererReport.update(1);
 			this._buttonDownload.disabled = false;
 		});
 
@@ -41,15 +42,11 @@ export default class App extends BaseComponent {
 	restart() {
 		this._settings.update();
 
-		this.stop(() => this.start());
+		this.start();
 	}
 
 	start() {
 		this._settings.persist();
-		this._renderer.start();
-	}
-
-	stop(callback) {
-		this._renderer.stop(callback);
+		this._renderer.startRender();
 	}
 }

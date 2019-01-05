@@ -1,18 +1,26 @@
 import BaseComponent from './base.js';
 import DensenetModel from '../models/densenet.js';
-import AnimationLoop from '../utils/animation-loop.js';
-import MathUtils from '../utils/math.js';
 
 export default class ImageRendererComponent extends BaseComponent {
 	constructor(element, settingsComponent) {
 		super(element);
 
 		this.context = this.element.getContext('2d');
-		this.imageData = null;
-		this.model = null;
 		this.settingsComponent = settingsComponent;
 
-		this.animationLoop = new AnimationLoop(frame => this._render(frame));
+		this.canvasSegment = document.createElement('canvas');
+		this.canvasSegment.height = ImageRendererComponent.SEGMENT_SIZE;
+		this.canvasSegment.width = ImageRendererComponent.SEGMENT_SIZE;
+
+		this.inputDataWorker = new Worker(`/assets/workers/input-data.js?_=${Date.now()}`);
+		this.inputDataWorker.addEventListener('message', (e) => {
+			const { data, xOffset, yOffset } = e.data;
+
+			this._render(data, xOffset, yOffset);
+		});
+
+		this.renderQueue = [];
+		this.renderQueueTotalLength = 0;
 	}
 
 	download() {
@@ -52,7 +60,10 @@ export default class ImageRendererComponent extends BaseComponent {
 		}, 'image/png');
 	}
 
-	start() {
+	startRender() {
+		const offset = ImageRendererComponent.SEGMENT_OFFSET;
+		const size = ImageRendererComponent.SEGMENT_SIZE;
+
 		const {
 			height,
 			seed,
@@ -60,71 +71,69 @@ export default class ImageRendererComponent extends BaseComponent {
 			width,
 		} = this.settingsComponent;
 
+		const xSegments = Math.ceil(width / offset);
+		const ySegments = Math.ceil(height / offset);
+
 		this.element.height = height;
 		this.element.width = width;
-		this.imageData = this.context.createImageData(width, height);
-		this.model = new DensenetModel(seed, sharpness);
 
-		this.animationLoop.start();
+		this.model = new DensenetModel(ImageRendererComponent.SEGMENT_SIZE, seed, sharpness);
+		this.renderQueue = [];
+
+		for (let y = 0; y < ySegments; y++) {
+			for (let x = 0; x < xSegments; x++) {
+				this.renderQueue.push({
+					height,
+					xOffset: x * offset,
+					yOffset: y * offset,
+					size,
+					time: this.settingsComponent.time,
+					width,
+				});
+			}
+		}
+
+		this.renderQueueTotalLength = this.renderQueue.length;
+
+		this._renderNext();
 		this.trigger('start');
 	}
 
-	stop(callback) {
-		this.animationLoop.stop(() => {
-			this.model.dispose();
+	_render(data, xOffset, yOffset) {
+		const y = tf.tidy(() => this.model.predict(tf.tensor(data, ImageRendererComponent.SEGMENT_SHAPE)));
 
-			if (typeof callback === 'function') {
-				callback();
-			}
-		});
+		tf.toPixels(y, this.canvasSegment)
+			.then(() => tf.nextFrame())
+			.then(() => {
+				this.context.drawImage(this.canvasSegment, xOffset, yOffset);
+				this._renderNext();
+			});
 	}
 
-	_render(frame) {
-		if (frame * this.settingsComponent.batchSize >= this.settingsComponent.pixelCount) {
-			this.stop();
-			this.trigger('render', 1);
+	_renderNext() {
+		if (this.renderQueue.length === 0) {
 			this.trigger('finish');
 			return;
 		}
 
-		const pixelIndex = frame * this.settingsComponent.batchSize;
-		const progress = Math.min(1, pixelIndex / (this.settingsComponent.pixelCount - 1));
+		this.trigger('progress', (this.renderQueueTotalLength - this.renderQueue.length) / this.renderQueueTotalLength);
 
-		this._renderPixel(pixelIndex);
-		this.trigger('render', progress);
+		this.inputDataWorker.postMessage(this.renderQueue.shift());
 	}
 
-	_renderPixel(pixelIndex) {
-		const { aspect } = this.settingsComponent;
+	static get SEGMENT_SIZE() {
+		return 256;
+	}
 
-		const imageDataIndexStart = 4 * pixelIndex;
-		const batchSize = Math.min(
-			this.settingsComponent.batchSize,
-			this.settingsComponent.pixelCount - pixelIndex);
+	static get SEGMENT_OFFSET() {
+		return ImageRendererComponent.SEGMENT_SIZE - 2;
+	}
 
-		const input = new Array(batchSize).fill().map((_, offset) => {
-			const x = (pixelIndex + offset) % this.element.width;
-			const y = Math.floor((pixelIndex + offset) / this.element.width) % this.element.height;
-			const xNormalized = MathUtils.lerp(-1, 1, x / (this.element.width - 1)) * aspect;
-			const yNormalized = MathUtils.lerp(-1, 1, y / (this.element.height - 1));
-
-			return [
-				xNormalized,
-				yNormalized,
-				Math.sqrt(xNormalized * xNormalized + yNormalized * yNormalized),
-				this.settingsComponent.time,
-			];
-		});
-
-		this.model.predict(input).forEach(([r, g, b], offset) => {
-			const imageDataIndex = imageDataIndexStart + 4 * offset;
-
-			this.imageData.data[imageDataIndex + 0] = 255 * r;
-			this.imageData.data[imageDataIndex + 1] = 255 * g;
-			this.imageData.data[imageDataIndex + 2] = 255 * b;
-			this.imageData.data[imageDataIndex + 3] = 255;
-		});
-
-		this.context.putImageData(this.imageData, 0, 0);
+	static get SEGMENT_SHAPE() {
+		return [
+			ImageRendererComponent.SEGMENT_SIZE,
+			ImageRendererComponent.SEGMENT_SIZE,
+			4
+		];
 	}
 }

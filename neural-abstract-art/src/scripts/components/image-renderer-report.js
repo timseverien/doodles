@@ -22,7 +22,10 @@ export default class ImageRendererReportComponent extends BaseComponent {
 		const delta = (now - this.timePrevious) / 1000;
 		this.timeElapsed += delta;
 
-		const timeTotal = (1 / progress) * this.timeElapsed;
+		const timeTotal = progress > 0
+			? (1 / progress) * this.timeElapsed
+			: Infinity;
+
 		const timeRemaining = (1 - progress) * timeTotal;
 
 		this.elementProgress.innerText = `${(100 * progress).toFixed(2)}%`;
