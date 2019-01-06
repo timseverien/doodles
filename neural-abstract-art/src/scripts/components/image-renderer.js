@@ -15,7 +15,6 @@ export default class ImageRendererComponent extends BaseComponent {
 		this.inputDataWorker = new Worker(`assets/workers/input-data.js?_=${Date.now()}`);
 		this.inputDataWorker.addEventListener('message', (e) => {
 			const { data, xOffset, yOffset } = e.data;
-
 			this._render(data, xOffset, yOffset);
 		});
 
@@ -61,6 +60,10 @@ export default class ImageRendererComponent extends BaseComponent {
 	}
 
 	startRender() {
+                if(this.renderingInProgress){
+                   return;
+                }
+                this.renderingInProgress = true;
 		const offset = ImageRendererComponent.SEGMENT_OFFSET;
 		const size = ImageRendererComponent.SEGMENT_SIZE;
 
@@ -72,7 +75,7 @@ export default class ImageRendererComponent extends BaseComponent {
 		} = this.settingsComponent;
 
 		const xSegments = Math.ceil(width / offset);
-		const ySegments = Math.ceil(height / offset);
+	    	const ySegments = Math.ceil(height / offset);
 
 		this.element.height = height;
 		this.element.width = width;
@@ -92,7 +95,7 @@ export default class ImageRendererComponent extends BaseComponent {
 				});
 			}
 		}
-
+            console.log('render queue', this.renderQueue.length);
 		this.renderQueueTotalLength = this.renderQueue.length;
 
 		this._renderNext();
@@ -113,6 +116,7 @@ export default class ImageRendererComponent extends BaseComponent {
 	_renderNext() {
 		if (this.renderQueue.length === 0) {
 			this.trigger('finish');
+                        this.renderingInProgress = false;
 			return;
 		}
 
