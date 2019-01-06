@@ -95,7 +95,6 @@ export default class ImageRendererComponent extends BaseComponent {
 				});
 			}
 		}
-            console.log('render queue', this.renderQueue.length);
 		this.renderQueueTotalLength = this.renderQueue.length;
 
 		this._renderNext();
