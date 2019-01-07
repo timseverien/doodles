@@ -47,6 +47,6 @@ export default class App extends BaseComponent {
 
 	start() {
 		this._settings.persist();
-		this._renderer.startRender();
+		this._renderer.start();
 	}
 }

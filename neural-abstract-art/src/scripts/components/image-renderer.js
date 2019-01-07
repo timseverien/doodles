@@ -1,5 +1,6 @@
 import BaseComponent from './base.js';
 import DensenetModel from '../models/densenet.js';
+import WorkerQueue from '../utils/worker-queue.js';
 
 export default class ImageRendererComponent extends BaseComponent {
 	constructor(element, settingsComponent) {
@@ -12,15 +13,23 @@ export default class ImageRendererComponent extends BaseComponent {
 		this.canvasSegment.height = ImageRendererComponent.SEGMENT_SIZE;
 		this.canvasSegment.width = ImageRendererComponent.SEGMENT_SIZE;
 
-		this.inputDataWorker = new Worker(`assets/workers/input-data.js?_=${Date.now()}`);
-		this.inputDataWorker.addEventListener('message', (e) => {
-			const { data, xOffset, yOffset } = e.data;
+		this._segmentCount = 0;
 
-			this._render(data, xOffset, yOffset);
+		this._segmentQueue = new WorkerQueue(`assets/workers/input-data.js?_=${Date.now()}`);
+		this._segmentQueue.on('message', ({ data, xOffset, yOffset }) => {
+			this._render(data, xOffset, yOffset)
+				.then(() => {
+					const queueSize = this._segmentQueue.queueSize;
+
+					this.trigger('progress', (this._segmentCount - queueSize) / this._segmentCount);
+
+					if (!this._segmentQueue.isEmpty) {
+						this._segmentQueue.run();
+					} else {
+						this.trigger('finish');
+					}
+				});
 		});
-
-		this.renderQueue = [];
-		this.renderQueueTotalLength = 0;
 	}
 
 	download() {
@@ -60,7 +69,7 @@ export default class ImageRendererComponent extends BaseComponent {
 		}, 'image/png');
 	}
 
-	startRender() {
+	start() {
 		const offset = ImageRendererComponent.SEGMENT_OFFSET;
 		const size = ImageRendererComponent.SEGMENT_SIZE;
 
@@ -74,51 +83,39 @@ export default class ImageRendererComponent extends BaseComponent {
 		const xSegments = Math.ceil(width / offset);
 		const ySegments = Math.ceil(height / offset);
 
+		this._segmentCount = xSegments * ySegments;
+		this._segmentQueue.clear();
+
 		this.element.height = height;
 		this.element.width = width;
 
 		this.model = new DensenetModel(ImageRendererComponent.SEGMENT_SIZE, seed, sharpness);
-		this.renderQueue = [];
+		this.trigger('start');
 
-		for (let y = 0; y < ySegments; y++) {
-			for (let x = 0; x < xSegments; x++) {
-				this.renderQueue.push({
-					height,
-					xOffset: x * offset,
-					yOffset: y * offset,
-					size,
-					time: this.settingsComponent.time,
-					width,
-				});
-			}
+		for (let i = 0; i < this._segmentCount; i++) {
+			const x = i % xSegments;
+			const y = Math.floor(i / xSegments);
+			const xOffset = x * offset;
+			const yOffset = y * offset;
+
+			this._segmentQueue.queue({
+				height,
+				xOffset,
+				yOffset,
+				size,
+				time: this.settingsComponent.time,
+				width,
+			});
 		}
 
-		this.renderQueueTotalLength = this.renderQueue.length;
-
-		this._renderNext();
-		this.trigger('start');
+		this._segmentQueue.run();
 	}
 
 	_render(data, xOffset, yOffset) {
 		const y = tf.tidy(() => this.model.predict(tf.tensor(data, ImageRendererComponent.SEGMENT_SHAPE)));
 
-		tf.toPixels(y, this.canvasSegment)
-			.then(() => tf.nextFrame())
-			.then(() => {
-				this.context.drawImage(this.canvasSegment, xOffset, yOffset);
-				this._renderNext();
-			});
-	}
-
-	_renderNext() {
-		if (this.renderQueue.length === 0) {
-			this.trigger('finish');
-			return;
-		}
-
-		this.trigger('progress', (this.renderQueueTotalLength - this.renderQueue.length) / this.renderQueueTotalLength);
-
-		this.inputDataWorker.postMessage(this.renderQueue.shift());
+		return tf.toPixels(y, this.canvasSegment)
+			.then(() => this.context.drawImage(this.canvasSegment, xOffset, yOffset));
 	}
 
 	static get SEGMENT_SIZE() {

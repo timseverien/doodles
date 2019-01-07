@@ -8,7 +8,7 @@ const getReturnValue = [
 ];
 
 self.addEventListener('message', (e) => {
-	const { height, xOffset, yOffset, size, time, width } = e.data;
+	const { height, xOffset, yOffset, size, time, width } = e.data.message;
 	const aspect = width / height;
 
 	const data = new Float32Array(size * size * 4).fill(0).map((_, index) => {
@@ -22,9 +22,11 @@ self.addEventListener('message', (e) => {
 	});
 
 	self.postMessage({
-		type: 'data',
-		data,
-		xOffset,
-		yOffset,
+		id: e.data.id,
+		message: {
+			data,
+			xOffset,
+			yOffset,
+		},
 	});
 });
